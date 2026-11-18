@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="DriveControl - Planeje suas metas financeiras e acompanhe seus resultados diariamente.">
+
+    <title>DriveControl | Minhas Metas</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/metas.css">
+</head>
+
+<body>
+
+    <main class="metas-container">
+
+        <!-- CABEÇALHO -->
+        <header class="metas-header">
+
+            <a href="index.html" class="brand-logo">
+
+                <svg
+                    class="brand-icon"
+                    viewBox="0 0 120 100"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                >
+
+                    <path
+                        d="M18 15H48C70 15 82 29 82 50C82 71 68 85 47 85H18V15Z"
+                        stroke="#FFFFFF"
+                        stroke-width="12"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M104 25C96 18 87 15 77 15C55 15 42 29 42 50C42 71 55 85 77 85C87 85 96 82 104 75"
+                        stroke="#C49A5A"
+                        stroke-width="12"
+                        stroke-linecap="square"
+                    />
+
+                </svg>
+
+                <span class="brand-name">
+                    <span class="brand-drive">DRIVE</span><span class="brand-control">CONTROL</span>
+                </span>
+
+                <span class="brand-slogan">
+                    Caminho para seus objetivos
+                </span>
+
+            </a>
+
+            <a href="index.html" class="back-link">
+                ← Voltar
+            </a>
+
+        </header>
+
+
+        <!-- APRESENTAÇÃO -->
+        <section class="metas-intro">
+
+            <h1>Suas metas, seus resultados.</h1>
+
+            <p>
+                Planeje seus objetivos financeiros, acompanhe
+                seu desempenho e descubra quanto precisa fazer
+                por dia para alcançar suas metas.
+            </p>
+
+        </section>
+
+
+        <!-- FORMULÁRIO DE PLANEJAMENTO -->
+        <section class="meta-card">
+
+            <h2>Planejamento da meta</h2>
+
+            <p class="card-description">
+                Informe seu objetivo financeiro e organize seu período de trabalho.
+            </p>
+
+            <form id="metaForm">
+
+                <!-- NOME DA META -->
+                <div class="input-group">
+
+                    <label for="nomeMeta">
+                        Nome da meta
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nomeMeta"
+                        placeholder="Ex.: Comprar um carro"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- VALOR TOTAL DA META -->
+                <div class="input-group">
+
+                    <label for="valorMeta">
+                        Valor que deseja alcançar (R$)
+                    </label>
+
+                    <input
+                        type="text"
+                        id="valorMeta"
+                        placeholder="R$ 0,00"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- VALOR QUE JÁ POSSUI -->
+                <div class="input-group">
+
+                    <label for="valorDisponivel">
+                        Quanto você já possui? (R$)
+                    </label>
+
+                    <input
+                        type="text"
+                        id="valorDisponivel"
+                        placeholder="R$ 0,00"
+                        inputmode="numeric"
+                        autocomplete="off"
+                    >
+
+                    <small class="field-description">
+                        Informe quanto já tem disponível para alcançar essa meta.
+                    </small>
+
+                </div>
+
+
+                <!-- MÊS DE PLANEJAMENTO -->
+                <div class="input-group">
+
+                    <label for="mesMeta">
+                        Mês de planejamento
+                    </label>
+
+                    <input
+                        type="month"
+                        id="mesMeta"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CALENDÁRIO -->
+                <div class="calendar">
+
+                    <div class="calendar-header">
+
+                        <button
+                            type="button"
+                            id="prevMonth"
+                            aria-label="Mês anterior"
+                        >
+                            &#10094;
+                        </button>
+
+                        <h3 id="calendarTitle">
+                            Selecione o mês
+                        </h3>
+
+                        <button
+                            type="button"
+                            id="nextMonth"
+                            aria-label="Próximo mês"
+                        >
+                            &#10095;
+                        </button>
+
+                    </div>
+
+
+                    <!-- DIAS DA SEMANA -->
+                    <div class="calendar-weekdays">
+
+                        <span>Dom</span>
+                        <span>Seg</span>
+                        <span>Ter</span>
+                        <span>Qua</span>
+                        <span>Qui</span>
+                        <span>Sex</span>
+                        <span>Sáb</span>
+
+                    </div>
+
+
+                    <!-- DIAS DO CALENDÁRIO -->
+                    <div
+                        class="calendar-days"
+                        id="calendarDays"
+                    ></div>
+
+                </div>
+
+
+                <!-- RESUMO DO PERÍODO -->
+                <div class="date-summary">
+
+                    <h3>Período selecionado</h3>
+
+                    <div class="date-info">
+
+                        <div>
+                            <span>Data inicial</span>
+                            <strong id="startDate">--/--/----</strong>
+                        </div>
+
+                        <div>
+                            <span>Data final</span>
+                            <strong id="endDate">--/--/----</strong>
+                        </div>
+
+                    </div>
+
+                    <p id="selectionMessage">
+                        Selecione a data inicial e a data final no calendário.
+                    </p>
+
+                </div>
+
+
+                <!-- RESULTADO DO PLANEJAMENTO -->
+                <div class="result-card" id="resultCard">
+
+                    <span class="result-label">
+                        Sua meta diária
+                    </span>
+
+                    <strong id="dailyResult">
+                        R$ 0,00
+                    </strong>
+
+                    <p id="resultDescription">
+                        O valor diário será calculado após preencher seu planejamento.
+                    </p>
+
+                </div>
+
+
+                <!-- MENSAGEM DE ERRO -->
+                <p
+                    id="errorMessage"
+                    class="error-message"
+                    role="alert"
+                ></p>
+
+
+                <!-- BOTÕES -->
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="calculate-button"
+                    >
+                        Calcular minha meta
+                    </button>
+
+                    <button
+                        type="button"
+                        id="clearButton"
+                        class="clear-button"
+                    >
+                        Limpar informações
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- ACOMPANHAMENTO DIÁRIO -->
+        <section
+            class="tracking-card"
+            id="trackingCard"
+            aria-labelledby="trackingTitle"
+        >
+
+            <div class="tracking-header">
+
+                <h2 id="trackingTitle">
+                    Acompanhamento diário
+                </h2>
+
+                <p>
+                    Acompanhe seu desempenho e mantenha sua meta em dia.
+                </p>
+
+            </div>
+
+
+            <!-- DATA ATUAL -->
+            <div class="tracking-date">
+
+                <span>Data de acompanhamento</span>
+
+                <strong id="todayLabel">
+                    --/--/----
+                </strong>
+
+            </div>
+
+
+            <!-- RESUMO FINANCEIRO -->
+            <div class="tracking-summary">
+
+                <div class="tracking-item">
+
+                    <span>Meta prevista para hoje</span>
+
+                    <strong id="todayTarget">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+                <div class="tracking-item">
+
+                    <span>Valor realizado</span>
+
+                    <strong id="todayRealized">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+                <div class="tracking-item">
+
+                    <span>Saldo restante</span>
+
+                    <strong id="remainingBalance">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+                <div class="tracking-item">
+
+                    <span>Dias restantes</span>
+
+                    <strong id="remainingDays">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOVIMENTAÇÕES FINANCEIRAS -->
+            <section
+                class="movement-section"
+                aria-labelledby="movementTitle"
+            >
+
+                <div class="movement-header">
+
+                    <h3 id="movementTitle">
+                        Movimentações financeiras
+                    </h3>
+
+                    <p>
+                        Registre valores que conseguiu guardar, mesmo antes do início oficial da sua meta.
+                    </p>
+
+                </div>
+
+
+                <!-- FORMULÁRIO DE MOVIMENTAÇÃO -->
+                <div class="movement-entry">
+
+                    <div class="input-group">
+
+                        <label for="movementAmount">
+                            Valor da movimentação (R$)
+                        </label>
+
+                        <input
+                            type="text"
+                            id="movementAmount"
+                            placeholder="R$ 0,00"
+                            inputmode="numeric"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label for="movementNote">
+                            Observação
+                        </label>
+
+                        <textarea
+                            id="movementNote"
+                            placeholder="Ex.: Economia das corridas de hoje"
+                            rows="3"
+                            maxlength="250"
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- DATA E HORÁRIO AUTOMÁTICOS -->
+                    <div class="movement-timestamp">
+
+                        <span>Data e horário do registro</span>
+
+                        <strong id="movementTimestamp">
+                            Aguardando movimentação
+                        </strong>
+
+                        <small>
+                            A data e o horário serão registrados automaticamente.
+                        </small>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="saveMovementButton"
+                        class="calculate-button"
+                    >
+                        Registrar movimentação
+                    </button>
+
+
+                    <p
+                        id="movementStatus"
+                        class="movement-status"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                </div>
+
+
+                <!-- EXTRATO DE MOVIMENTAÇÕES -->
+                <div class="movement-history">
+
+                    <h4>
+                        Extrato de movimentações
+                    </h4>
+
+                    <p>
+                        Consulte os valores adicionados à sua meta.
+                    </p>
+
+                    <div
+                        class="movement-list"
+                        id="movementHistoryList"
+                        aria-live="polite"
+                    >
+
+                        <p class="movement-empty">
+                            Nenhuma movimentação registrada ainda.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- REGISTRO DO RESULTADO DIÁRIO -->
+            <div class="daily-entry">
+
+                <h3>Registrar resultado do dia</h3>
+
+                <p>
+                    Informe quanto você conseguiu realizar hoje durante o período oficial da meta.
+                </p>
+
+                <div class="input-group">
+
+                    <label for="realizedToday">
+                        Quanto você fez hoje? (R$)
+                    </label>
+
+                    <input
+                        type="text"
+                        id="realizedToday"
+                        placeholder="R$ 0,00"
+                        inputmode="numeric"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <button
+                    type="button"
+                    id="saveDailyButton"
+                    class="calculate-button"
+                >
+                    Registrar resultado
+                </button>
+
+                <p
+                    id="dailyStatus"
+                    class="daily-status"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Seu resultado diário aparecerá aqui.
+                </p>
+
+            </div>
+
+
+            <!-- PROGRESSO GERAL -->
+            <div class="progress-section">
+
+                <h3>Progresso da meta</h3>
+
+                <div class="progress-info">
+
+                    <span>Valor alcançado</span>
+
+                    <strong id="progressText">
+                        0%
+                    </strong>
+
+                </div>
+
+                <div
+                    class="progress-track"
+                    role="progressbar"
+                    aria-label="Progresso da meta"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    id="progressBar"
+                >
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+                <p id="progressDescription">
+                    O progresso será atualizado conforme seus resultados.
+                </p>
+
+            </div>
+
+
+            <!-- HISTÓRICO DIÁRIO -->
+            <div class="history-section">
+
+                <h3>Histórico de resultados</h3>
+
+                <p>
+                    Consulte os valores registrados durante seu planejamento.
+                </p>
+
+                <div
+                    class="history-list"
+                    id="historyList"
+                    aria-live="polite"
+                >
+
+                    <p class="history-empty">
+                        Nenhum resultado registrado ainda.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RODAPÉ -->
+        <footer class="metas-footer">
+
+            © 2026 DriveControl. Todos os direitos reservados.
+
+        </footer>
+
+    </main>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="js/metas.js"></script>
+
+</body>
+</html>
