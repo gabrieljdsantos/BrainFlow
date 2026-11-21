@@ -88,17 +88,63 @@
 
             <form id="metaForm">
 
-                <!-- NOME DA META -->
+                <!-- CATEGORIA DO OBJETIVO -->
+                <div class="input-group">
+
+                    <label for="categoriaMeta">
+                        Categoria do objetivo
+                    </label>
+
+                    <select id="categoriaMeta" required>
+
+                        <option value="">
+                            Selecione uma categoria
+                        </option>
+
+                        <option value="Veículo">Veículo</option>
+                        <option value="Casa">Casa</option>
+                        <option value="Viagem">Viagem</option>
+                        <option value="Educação">Educação</option>
+                        <option value="Reserva financeira">Reserva financeira</option>
+                        <option value="Outros">Outros</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CATEGORIA PERSONALIZADA -->
+                <div
+                    class="input-group"
+                    id="categoriaPersonalizadaGroup"
+                    hidden
+                >
+
+                    <label for="categoriaPersonalizada">
+                        Qual é a sua categoria?
+                    </label>
+
+                    <input
+                        type="text"
+                        id="categoriaPersonalizada"
+                        placeholder="Ex.: Casamento, negócio, estudos..."
+                        maxlength="60"
+                    >
+
+                </div>
+
+
+                <!-- NOME DO OBJETIVO -->
                 <div class="input-group">
 
                     <label for="nomeMeta">
-                        Nome da meta
+                        Dê um nome ao seu objetivo
                     </label>
 
                     <input
                         type="text"
                         id="nomeMeta"
-                        placeholder="Ex.: Comprar um carro"
+                        placeholder="Ex.: Comprar meu carro"
                         required
                     >
 
@@ -146,18 +192,158 @@
                 </div>
 
 
-                <!-- MÊS DE PLANEJAMENTO -->
-                <div class="input-group">
+                <!-- PERÍODO DE PLANEJAMENTO -->
+                <div class="planning-period">
 
-                    <label for="mesMeta">
-                        Mês de planejamento
-                    </label>
+                    <h3>Período de planejamento</h3>
 
-                    <input
-                        type="month"
-                        id="mesMeta"
-                        required
+                    <p class="field-description">
+                        Escolha o primeiro e o último mês do seu objetivo.
+                    </p>
+
+                    <div class="period-fields">
+
+                        <div class="input-group">
+
+                            <label for="mesInicio">
+                                Mês inicial
+                            </label>
+
+                            <input
+                                type="month"
+                                id="mesInicio"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <label for="mesFim">
+                                Mês final
+                            </label>
+
+                            <input
+                                type="month"
+                                id="mesFim"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <p
+                        id="periodDuration"
+                        class="field-description"
                     >
+                        Selecione o período do planejamento.
+                    </p>
+
+                </div>
+
+
+                <!-- CONFIGURAÇÃO DOS DIAS DE TRABALHO -->
+                <div class="workday-settings">
+
+                    <h3>Organize seus dias de trabalho</h3>
+
+                    <p class="field-description">
+                        Escolha como deseja organizar os dias do seu planejamento.
+                    </p>
+
+                    <div class="workday-options">
+
+                        <!-- TODOS OS DIAS -->
+                        <label class="workday-option">
+
+                            <input
+                                type="radio"
+                                name="workdayMode"
+                                value="all"
+                                checked
+                            >
+
+                            <span>
+                                <strong>Todos os dias</strong>
+
+                                <small>
+                                    Inclui sábados e domingos.
+                                </small>
+                            </span>
+
+                        </label>
+
+
+                        <!-- SEGUNDA A SEXTA -->
+                        <label class="workday-option">
+
+                            <input
+                                type="radio"
+                                name="workdayMode"
+                                value="weekdays"
+                            >
+
+                            <span>
+                                <strong>Segunda a sexta</strong>
+
+                                <small>
+                                    Exclui automaticamente sábados e domingos.
+                                </small>
+                            </span>
+
+                        </label>
+
+
+                        <!-- PERSONALIZAR DIAS -->
+                        <label class="workday-option">
+
+                            <input
+                                type="radio"
+                                name="workdayMode"
+                                value="custom"
+                            >
+
+                            <span>
+                                <strong>Personalizar dias de folga</strong>
+
+                                <small>
+                                    Escolha os dias em que não trabalhará ou não fará depósitos.
+                                </small>
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- PAINEL DE PERSONALIZAÇÃO -->
+                    <div
+                        id="customDaysPanel"
+                        hidden
+                    >
+
+                        <h4>Dias de folga sem depósito</h4>
+
+                        <p class="field-description">
+                            Selecione no calendário os dias que deseja retirar do planejamento.
+                        </p>
+
+                        <div class="workday-summary">
+
+                            <span>
+                                Dias ativos:
+                                <strong id="activeDaysCount">0</strong>
+                            </span>
+
+                            <span>
+                                Dias de folga:
+                                <strong id="offDaysCount">0</strong>
+                            </span>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -176,7 +362,7 @@
                         </button>
 
                         <h3 id="calendarTitle">
-                            Selecione o mês
+                            Selecione o período
                         </h3>
 
                         <button
@@ -221,13 +407,23 @@
                     <div class="date-info">
 
                         <div>
+
                             <span>Data inicial</span>
-                            <strong id="startDate">--/--/----</strong>
+
+                            <strong id="startDate">
+                                --/--/----
+                            </strong>
+
                         </div>
 
                         <div>
+
                             <span>Data final</span>
-                            <strong id="endDate">--/--/----</strong>
+
+                            <strong id="endDate">
+                                --/--/----
+                            </strong>
+
                         </div>
 
                     </div>

@@ -3,8 +3,15 @@
    IDENTIDADE VISUAL: DARK PREMIUM
 ======================================== */
 
-/* CONFIGURAÇÕES GERAIS */
+* {
+    box-sizing: border-box;
+}
 
+[hidden] {
+    display: none !important;
+}
+
+/* CONFIGURAÇÕES GERAIS */
 .metas-container {
     width: 100%;
     min-height: 100vh;
@@ -15,7 +22,6 @@
 }
 
 /* CABEÇALHO */
-
 .metas-header {
     display: flex;
     justify-content: space-between;
@@ -35,7 +41,6 @@
 }
 
 /* APRESENTAÇÃO */
-
 .metas-intro {
     max-width: 760px;
     margin: 0 auto 40px;
@@ -55,9 +60,9 @@
     line-height: 1.7;
 }
 
-/* CARD PRINCIPAL */
-
-.meta-card {
+/* CARDS */
+.meta-card,
+.tracking-card {
     max-width: 820px;
     margin: auto;
     padding: 35px;
@@ -80,7 +85,6 @@
 }
 
 /* FORMULÁRIO */
-
 .input-group {
     margin-bottom: 25px;
 }
@@ -93,7 +97,8 @@
     font-weight: bold;
 }
 
-.input-group input {
+.input-group input,
+.input-group select {
     display: block;
     width: 100%;
     min-height: 52px;
@@ -105,21 +110,56 @@
     font-family: inherit;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.3s ease,
-                background 0.3s ease;
+    transition: border-color 0.3s ease, background 0.3s ease;
 }
 
-.input-group input::placeholder {
+.input-group input::placeholder,
+.input-group textarea::placeholder {
     color: #858585;
 }
 
-.input-group input:focus {
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
     background: #2D2D2D;
     border-color: #C49A5A;
 }
 
-/* DESCRIÇÃO DOS CAMPOS */
+.input-group select {
+    color-scheme: dark;
+    cursor: pointer;
+}
 
+.input-group select option {
+    background: #292929;
+    color: #F5F1E9;
+}
+
+.input-group textarea {
+    display: block;
+    width: 100%;
+    min-height: 90px;
+    padding: 15px;
+    resize: vertical;
+    background: #292929;
+    border: 1px solid #383838;
+    border-radius: 8px;
+    color: #F5F1E9;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.input-group input:disabled,
+.input-group select:disabled,
+.input-group textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* DESCRIÇÃO DOS CAMPOS */
 .field-description {
     display: block;
     margin-top: 8px;
@@ -128,12 +168,15 @@
     line-height: 1.5;
 }
 
-/* CAMPO DE NOME E VALORES */
-
+/* CAMPOS DE NOME E VALORES */
 #nomeMeta,
 #valorMeta,
 #valorDisponivel,
-#realizedToday {
+#realizedToday,
+#categoriaMeta,
+#categoriaPersonalizada,
+#mesInicio,
+#mesFim {
     background: #292929;
     color: #F5F1E9;
 }
@@ -141,19 +184,127 @@
 #nomeMeta::placeholder,
 #valorMeta::placeholder,
 #valorDisponivel::placeholder,
-#realizedToday::placeholder {
+#realizedToday::placeholder,
+#categoriaPersonalizada::placeholder {
     color: #858585;
 }
 
-/* CAMPO DE MÊS */
+/* PERÍODO: MÊS INICIAL E FINAL */
+.planning-period {
+    margin-bottom: 25px;
+}
 
-#mesMeta {
+.period-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.period-fields .input-group {
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+#mesInicio,
+#mesFim {
     color-scheme: dark;
     cursor: pointer;
 }
 
-/* CALENDÁRIO */
+/* CONFIGURAÇÃO DOS DIAS DE TRABALHO */
+.workday-settings {
+    margin: 10px 0 25px;
+}
 
+.workday-settings > label,
+.workday-settings > h3 {
+    display: block;
+    margin-bottom: 12px;
+    color: #F5F1E9;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.workday-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.workday-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 14px 16px;
+    background: #292929;
+    border: 1px solid #383838;
+    border-radius: 8px;
+    color: #D8D3CA;
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.workday-option:hover {
+    border-color: #8F7145;
+    background: #303030;
+}
+
+.workday-option input[type="radio"] {
+    width: 17px;
+    height: 17px;
+    min-height: 0;
+    margin: 0;
+    accent-color: #C49A5A;
+    flex-shrink: 0;
+}
+
+.workday-option:has(input:checked) {
+    border-color: #C49A5A;
+    background: rgba(196, 154, 90, 0.10);
+    color: #F5F1E9;
+}
+
+#customDaysPanel {
+    margin-top: 16px;
+    padding: 18px;
+    background: #252525;
+    border: 1px solid #454545;
+    border-radius: 10px;
+}
+
+#customDaysPanel > p {
+    margin-bottom: 14px;
+    color: #A5A5A5;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.workday-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.workday-summary span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 11px;
+    background: #303030;
+    border: 1px solid #454545;
+    border-radius: 20px;
+    color: #D8D3CA;
+    font-size: 11px;
+}
+
+.workday-summary strong {
+    color: #D9B77E;
+}
+
+/* CALENDÁRIO */
 .calendar {
     margin-top: 35px;
     padding: 22px;
@@ -161,8 +312,6 @@
     border: 1px solid #383838;
     border-radius: 12px;
 }
-
-/* CABEÇALHO DO CALENDÁRIO */
 
 .calendar-header {
     display: flex;
@@ -180,8 +329,6 @@
     font-weight: bold;
     text-transform: capitalize;
 }
-
-/* BOTÕES DO CALENDÁRIO */
 
 .calendar-header button {
     display: flex;
@@ -210,8 +357,6 @@
     cursor: not-allowed;
 }
 
-/* DIAS DA SEMANA E DO MÊS */
-
 .calendar-weekdays,
 .calendar-days {
     display: grid;
@@ -229,8 +374,6 @@
     font-size: 11px;
     font-weight: bold;
 }
-
-/* DIAS DO CALENDÁRIO */
 
 .calendar-day {
     display: flex;
@@ -277,13 +420,75 @@
     color: #D9B77E;
 }
 
+.calendar-day.active-day {
+    background: rgba(99, 214, 149, 0.08);
+    border-color: rgba(99, 214, 149, 0.22);
+}
+
+.calendar-day.off-day {
+    background: rgba(255, 119, 119, 0.10);
+    border-color: rgba(255, 119, 119, 0.35);
+    color: #FFAAAA;
+}
+
+.calendar-day.off-day:hover:not(:disabled) {
+    background: rgba(255, 119, 119, 0.20);
+    border-color: #FF7777;
+}
+
+.calendar-day.selected.off-day,
+.calendar-day.range-start.off-day,
+.calendar-day.range-end.off-day {
+    background: #C49A5A;
+    border-color: #C49A5A;
+    color: #171717;
+}
+
 .calendar-day:disabled {
     opacity: 0.3;
     cursor: not-allowed;
 }
 
-/* RESUMO DAS DATAS */
+/* LEGENDA DO CALENDÁRIO */
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 18px;
+}
 
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #A5A5A5;
+    font-size: 11px;
+}
+
+.legend-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+}
+
+.legend-active {
+    background: rgba(99, 214, 149, 0.35);
+    border-color: #63D695;
+}
+
+.legend-off {
+    background: rgba(255, 119, 119, 0.25);
+    border-color: #FF7777;
+}
+
+.legend-selected {
+    background: #C49A5A;
+    border-color: #C49A5A;
+}
+
+/* RESUMO DAS DATAS */
 .date-summary {
     display: flex;
     flex-direction: column;
@@ -343,7 +548,6 @@
 }
 
 /* RESULTADO DA META */
-
 .result-card {
     margin-top: 30px;
     padding: 25px;
@@ -377,7 +581,6 @@
 }
 
 /* MENSAGEM DE ERRO */
-
 .error-message {
     color: #FF7777;
     font-size: 13px;
@@ -389,7 +592,6 @@
 }
 
 /* BOTÕES DO FORMULÁRIO */
-
 .form-actions {
     display: flex;
     flex-direction: column;
@@ -408,12 +610,8 @@
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s ease,
-                color 0.3s ease,
-                border-color 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
-
-/* BOTÃO CALCULAR */
 
 .calculate-button {
     background: #C49A5A;
@@ -425,8 +623,6 @@
     background: #D9B77E;
     border-color: #D9B77E;
 }
-
-/* BOTÃO LIMPAR */
 
 .clear-button {
     background: transparent;
@@ -440,18 +636,9 @@
     color: #F5F1E9;
 }
 
-/* ========================================
-   NOVO PAINEL DE ACOMPANHAMENTO
-======================================== */
-
+/* PAINEL DE ACOMPANHAMENTO */
 .tracking-card {
-    max-width: 820px;
     margin: 35px auto 0;
-    padding: 35px;
-    background: #202020;
-    border: 1px solid #383838;
-    border-radius: 15px;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
 }
 
 .tracking-header {
@@ -470,8 +657,6 @@
     font-size: 13px;
     line-height: 1.6;
 }
-
-/* DATA DE ACOMPANHAMENTO */
 
 .tracking-date {
     display: flex;
@@ -494,8 +679,6 @@
     color: #C49A5A;
     font-size: 18px;
 }
-
-/* RESUMO FINANCEIRO */
 
 .tracking-summary {
     display: grid;
@@ -528,7 +711,6 @@
 }
 
 /* REGISTRO DIÁRIO */
-
 .daily-entry {
     margin-top: 25px;
     padding: 25px;
@@ -558,7 +740,10 @@
     margin-top: 5px;
 }
 
-/* STATUS DO RESULTADO */
+.daily-entry button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
 
 .daily-status {
     margin-top: 18px;
@@ -569,6 +754,10 @@
     font-size: 13px;
     line-height: 1.6;
     text-align: center;
+}
+
+.daily-status:empty {
+    display: none;
 }
 
 .daily-status.positive {
@@ -589,8 +778,6 @@
     color: #D9B77E;
 }
 
-/* CORES DOS RESULTADOS */
-
 .tracking-item strong.positive,
 .positive {
     color: #63D695;
@@ -602,7 +789,6 @@
 }
 
 /* PROGRESSO DA META */
-
 .progress-section {
     margin-top: 30px;
     padding: 25px;
@@ -660,7 +846,6 @@
 }
 
 /* HISTÓRICO DIÁRIO */
-
 .history-section {
     margin-top: 30px;
 }
@@ -693,8 +878,6 @@
     font-size: 13px;
     text-align: center;
 }
-
-/* ITEM DO HISTÓRICO */
 
 .history-item {
     display: flex;
@@ -749,8 +932,191 @@
     color: #FF7777;
 }
 
-/* RODAPÉ */
+/* MOVIMENTAÇÕES FINANCEIRAS */
+.movement-section {
+    margin-top: 30px;
+    padding: 25px;
+    background: #292929;
+    border: 1px solid #383838;
+    border-radius: 10px;
+}
 
+.movement-header {
+    margin-bottom: 25px;
+}
+
+.movement-header h3 {
+    color: #F5F1E9;
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.movement-header p {
+    color: #A5A5A5;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.movement-entry {
+    padding: 22px;
+    background: #202020;
+    border: 1px solid #383838;
+    border-radius: 10px;
+}
+
+.movement-entry .input-group {
+    margin-bottom: 20px;
+}
+
+.movement-timestamp {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 17px;
+    background: #292929;
+    border: 1px solid #383838;
+    border-radius: 8px;
+}
+
+.movement-timestamp span {
+    color: #A5A5A5;
+    font-size: 12px;
+}
+
+.movement-timestamp strong {
+    color: #D9B77E;
+    font-size: 14px;
+}
+
+.movement-timestamp small {
+    color: #777;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.movement-entry button {
+    width: 100%;
+    min-height: 48px;
+    padding: 13px 20px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.movement-entry button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.movement-status {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    color: #A5A5A5;
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.movement-status:empty {
+    display: none;
+}
+
+.movement-status.success {
+    background: rgba(46, 160, 95, 0.12);
+    border: 1px solid rgba(46, 160, 95, 0.35);
+    color: #63D695;
+}
+
+.movement-status.error {
+    background: rgba(255, 90, 90, 0.10);
+    border: 1px solid rgba(255, 90, 90, 0.35);
+    color: #FF7777;
+}
+
+.movement-history {
+    margin-top: 30px;
+}
+
+.movement-history h4 {
+    color: #F5F1E9;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.movement-history > p {
+    color: #A5A5A5;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
+
+.movement-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.movement-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 18px;
+    background: #202020;
+    border: 1px solid #383838;
+    border-radius: 10px;
+}
+
+.movement-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.movement-item-info strong {
+    color: #F5F1E9;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.movement-item-meta {
+    color: #858585;
+    font-size: 11px;
+}
+
+.movement-item-note {
+    color: #A5A5A5;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.movement-item-value {
+    flex-shrink: 0;
+    color: #63D695;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.movement-empty {
+    padding: 22px;
+    background: #202020;
+    border: 1px dashed #454545;
+    border-radius: 10px;
+    color: #858585;
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* RODAPÉ */
 .metas-footer {
     text-align: center;
     color: #777;
@@ -759,12 +1125,18 @@
     padding-bottom: 20px;
 }
 
-/* ========================================
-   RESPONSIVIDADE
-======================================== */
+/* FOCO ACESSÍVEL */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #D9B77E;
+    outline-offset: 3px;
+}
 
+/* RESPONSIVIDADE */
 @media (max-width: 650px) {
-
     .metas-container {
         padding: 25px 18px;
     }
@@ -789,6 +1161,15 @@
     .meta-card h2,
     .tracking-header h2 {
         font-size: 21px;
+    }
+
+    .period-fields {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .period-fields .input-group {
+        margin-bottom: 20px;
     }
 
     .calendar {
@@ -816,6 +1197,14 @@
         width: 32px;
         height: 32px;
         font-size: 15px;
+    }
+
+    .calendar-legend {
+        gap: 10px;
+    }
+
+    .legend-item {
+        font-size: 10px;
     }
 
     .date-info {
@@ -866,248 +1255,6 @@
         align-items: flex-start;
     }
 
-}
-
-/* ========================================
-   NOVA SEÇÃO - MOVIMENTAÇÕES FINANCEIRAS
-======================================== */
-
-.movement-section {
-    margin-top: 30px;
-    padding: 25px;
-    background: #292929;
-    border: 1px solid #383838;
-    border-radius: 10px;
-}
-
-/* CABEÇALHO */
-
-.movement-header {
-    margin-bottom: 25px;
-}
-
-.movement-header h3 {
-    color: #F5F1E9;
-    font-size: 19px;
-    margin-bottom: 10px;
-}
-
-.movement-header p {
-    color: #A5A5A5;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-/* FORMULÁRIO */
-
-.movement-entry {
-    padding: 22px;
-    background: #202020;
-    border: 1px solid #383838;
-    border-radius: 10px;
-}
-
-.movement-entry .input-group {
-    margin-bottom: 20px;
-}
-
-/* CAMPO DE OBSERVAÇÃO */
-
-.input-group textarea {
-    display: block;
-    width: 100%;
-    min-height: 90px;
-    padding: 15px;
-    resize: vertical;
-    background: #292929;
-    border: 1px solid #383838;
-    border-radius: 8px;
-    color: #F5F1E9;
-    font-family: inherit;
-    font-size: 14px;
-    line-height: 1.6;
-    outline: none;
-    transition: border-color 0.3s ease,
-                background 0.3s ease;
-}
-
-.input-group textarea::placeholder {
-    color: #858585;
-}
-
-.input-group textarea:focus {
-    background: #2D2D2D;
-    border-color: #C49A5A;
-}
-
-/* DATA E HORÁRIO AUTOMÁTICOS */
-
-.movement-timestamp {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 20px;
-    padding: 17px;
-    background: #292929;
-    border: 1px solid #383838;
-    border-radius: 8px;
-}
-
-.movement-timestamp span {
-    color: #A5A5A5;
-    font-size: 12px;
-}
-
-.movement-timestamp strong {
-    color: #D9B77E;
-    font-size: 14px;
-}
-
-.movement-timestamp small {
-    color: #777;
-    font-size: 11px;
-    line-height: 1.5;
-}
-
-/* BOTÃO DE MOVIMENTAÇÃO */
-
-.movement-entry button {
-    width: 100%;
-    min-height: 48px;
-    padding: 13px 20px;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.movement-entry button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* MENSAGEM DE STATUS */
-
-.movement-status {
-    margin-top: 15px;
-    padding: 12px;
-    border-radius: 8px;
-    color: #A5A5A5;
-    font-size: 13px;
-    line-height: 1.6;
-    text-align: center;
-}
-
-.movement-status:empty {
-    display: none;
-}
-
-.movement-status.success {
-    background: rgba(46, 160, 95, 0.12);
-    border: 1px solid rgba(46, 160, 95, 0.35);
-    color: #63D695;
-}
-
-.movement-status.error {
-    background: rgba(255, 90, 90, 0.10);
-    border: 1px solid rgba(255, 90, 90, 0.35);
-    color: #FF7777;
-}
-
-/* EXTRATO DE MOVIMENTAÇÕES */
-
-.movement-history {
-    margin-top: 30px;
-}
-
-.movement-history h4 {
-    color: #F5F1E9;
-    font-size: 17px;
-    margin-bottom: 8px;
-}
-
-.movement-history > p {
-    color: #A5A5A5;
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 18px;
-}
-
-/* LISTA */
-
-.movement-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-/* MOVIMENTAÇÃO INDIVIDUAL */
-
-.movement-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    padding: 18px;
-    background: #202020;
-    border: 1px solid #383838;
-    border-radius: 10px;
-}
-
-.movement-item-info {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    min-width: 0;
-}
-
-.movement-item-info strong {
-    color: #F5F1E9;
-    font-size: 13px;
-    overflow-wrap: anywhere;
-}
-
-.movement-item-meta {
-    color: #858585;
-    font-size: 11px;
-}
-
-.movement-item-note {
-    color: #A5A5A5;
-    font-size: 12px;
-    line-height: 1.5;
-    overflow-wrap: anywhere;
-}
-
-.movement-item-value {
-    flex-shrink: 0;
-    color: #63D695;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: right;
-}
-
-/* EXTRATO VAZIO */
-
-.movement-empty {
-    padding: 22px;
-    background: #202020;
-    border: 1px dashed #454545;
-    border-radius: 10px;
-    color: #858585;
-    font-size: 13px;
-    line-height: 1.6;
-    text-align: center;
-}
-
-/* ========================================
-   RESPONSIVIDADE - MOVIMENTAÇÕES
-======================================== */
-
-@media (max-width: 650px) {
-
     .movement-section {
         padding: 18px 14px;
     }
@@ -1133,5 +1280,15 @@
     .movement-timestamp {
         padding: 14px;
     }
+}
 
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
 }

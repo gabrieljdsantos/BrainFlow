@@ -1,15 +1,28 @@
 /* ========================================
    DRIVECONTROL - METAS FINANCEIRAS
-   Planejamento, resultados e movimentações
+   Planejamento, calendário e acompanhamento
 ======================================== */
 
 /* 1. ELEMENTOS */
 
 const metaForm = document.getElementById("metaForm");
+
+const categoriaMeta = document.getElementById("categoriaMeta");
+const categoriaPersonalizadaGroup = document.getElementById("categoriaPersonalizadaGroup");
+const categoriaPersonalizada = document.getElementById("categoriaPersonalizada");
+
 const nomeMeta = document.getElementById("nomeMeta");
 const valorMeta = document.getElementById("valorMeta");
 const valorDisponivel = document.getElementById("valorDisponivel");
-const mesMeta = document.getElementById("mesMeta");
+
+const mesInicio = document.getElementById("mesInicio");
+const mesFim = document.getElementById("mesFim");
+const periodDuration = document.getElementById("periodDuration");
+
+const workdayRadios = document.querySelectorAll('input[name="workdayMode"]');
+const customDaysPanel = document.getElementById("customDaysPanel");
+const activeDaysCount = document.getElementById("activeDaysCount");
+const offDaysCount = document.getElementById("offDaysCount");
 
 const calendarTitle = document.getElementById("calendarTitle");
 const calendarDays = document.getElementById("calendarDays");
@@ -72,38 +85,28 @@ let currentDate = firstDayOfMonth(getToday());
 let plan = null;
 let midnightTimer = null;
 
+let workdayMode = "all";
+let offDays = [];
+
 
 function getToday() {
-
     const d = new Date();
-
     d.setHours(0, 0, 0, 0);
-
     return d;
-
 }
 
 
 function firstDayOfMonth(date) {
-
-    return new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        1
-    );
-
+    return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
 
 function dateToISO(date) {
-
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-
 }
 
 
 function parseLocalDate(value) {
-
     if (
         typeof value !== "string" ||
         !/^\d{4}-\d{2}-\d{2}$/.test(value)
@@ -112,88 +115,56 @@ function parseLocalDate(value) {
     }
 
     const [year, month, day] = value.split("-").map(Number);
-
     const d = new Date(year, month - 1, day);
 
     return dateToISO(d) === value ? d : null;
+}
 
+
+function parseMonth(value) {
+    if (typeof value !== "string" || !/^\d{4}-\d{2}$/.test(value)) {
+        return null;
+    }
+
+    const [year, month] = value.split("-").map(Number);
+
+    if (month < 1 || month > 12) return null;
+
+    return new Date(year, month - 1, 1);
 }
 
 
 function formatDate(date) {
-
-    return date
-        ? date.toLocaleDateString("pt-BR")
-        : "--/--/----";
-
+    return date ? date.toLocaleDateString("pt-BR") : "--/--/----";
 }
 
 
 function sameDate(a, b) {
-
     return dateToISO(a) === dateToISO(b);
-
 }
 
 
 function calculateDays(start, end) {
+    if (!start || !end || end < start) return 0;
 
-    if (!start || !end || end < start) {
-        return 0;
-    }
-
-    const a = Date.UTC(
-        start.getFullYear(),
-        start.getMonth(),
-        start.getDate()
-    );
-
-    const b = Date.UTC(
-        end.getFullYear(),
-        end.getMonth(),
-        end.getDate()
-    );
+    const a = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+    const b = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
 
     return Math.round((b - a) / 86400000) + 1;
-
 }
 
 
 function formatMoney(cents) {
-
     return currencyFormatter.format(cents / 100);
-
 }
 
 
 function validCents(value) {
-
     return Number.isSafeInteger(value) && value >= 0;
-
-}
-
-
-function getMoneyValue(element) {
-
-    const raw = element.value.trim();
-
-    if (!raw) return 0;
-
-    const digits = raw.replace(/\D/g, "");
-
-    if (!digits) return 0;
-
-    const cents = raw.includes("R$")
-        ? Number(digits)
-        : Number(digits) * 100;
-
-    return cents;
-
 }
 
 
 function readMoney(element) {
-
     const value = element.value.trim();
 
     if (!value) return 0;
@@ -210,7 +181,6 @@ function readMoney(element) {
 
     return Number(reais) * 100 +
         Number(centavos.padEnd(2, "0"));
-
 }
 
 
@@ -228,7 +198,6 @@ function configureMoneyInput(element, onUpdate = () => {}) {
             : "";
 
         element.dataset.editing = "true";
-
     });
 
 
@@ -239,16 +208,13 @@ function configureMoneyInput(element, onUpdate = () => {}) {
         const comma = value.indexOf(",");
 
         if (comma !== -1) {
-
             value = value.slice(0, comma + 1) +
                 value.slice(comma + 1).replace(/,/g, "").slice(0, 2);
-
         }
 
         element.value = value;
 
         onUpdate();
-
     });
 
 
@@ -264,45 +230,306 @@ function configureMoneyInput(element, onUpdate = () => {}) {
         delete element.dataset.editing;
 
         onUpdate();
-
     });
-
 }
 
 
 function showError(message) {
-
     errorMessage.textContent = message;
-
 }
 
 
 function clearError() {
-
     errorMessage.textContent = "";
-
 }
 
 
 function setMovementStatus(message, type = "") {
-
     movementStatus.textContent = message;
+    movementStatus.className = `movement-status${type ? ` ${type}` : ""}`;
+}
 
-    movementStatus.className =
-        `movement-status${type ? ` ${type}` : ""}`;
+
+/* 3. CATEGORIA DO OBJETIVO */
+
+function updateCategoryField() {
+
+    const isCustom = categoriaMeta.value === "Outros";
+
+    categoriaPersonalizadaGroup.hidden = !isCustom;
+
+    categoriaPersonalizada.required = isCustom;
+
+    if (!isCustom) {
+        categoriaPersonalizada.value = "";
+    }
 
 }
 
 
-/* 3. CALENDÁRIO */
+function getCategoryData() {
 
-function updateMonthInput() {
-
-    mesMeta.value =
-        `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}`;
+    return {
+        category: categoriaMeta.value,
+        customCategory: categoriaMeta.value === "Outros"
+            ? categoriaPersonalizada.value.trim()
+            : ""
+    };
 
 }
 
+
+categoriaMeta.addEventListener("change", () => {
+    updateCategoryField();
+    updateAutomaticCalculation();
+});
+
+
+categoriaPersonalizada.addEventListener("input", updateAutomaticCalculation);
+
+
+/* 4. PERÍODO DE PLANEJAMENTO */
+
+function getSelectedMonthRange() {
+
+    const first = parseMonth(mesInicio.value);
+    const last = parseMonth(mesFim.value);
+
+    if (!first || !last || last < first) {
+        return null;
+    }
+
+    return { first, last };
+}
+
+
+function getMinimumMonth() {
+    return firstDayOfMonth(getToday());
+}
+
+
+function updatePeriodDuration() {
+
+    const range = getSelectedMonthRange();
+
+    if (!range) {
+        periodDuration.textContent =
+            "Selecione um mês inicial e um mês final válidos.";
+        return;
+    }
+
+    const months =
+        (range.last.getFullYear() - range.first.getFullYear()) * 12 +
+        range.last.getMonth() - range.first.getMonth() + 1;
+
+    periodDuration.textContent =
+        `Seu planejamento terá ${months} ${months === 1 ? "mês" : "meses"}.`;
+}
+
+
+function updateMonthLimits() {
+
+    const minimum = dateToMonthValue(getMinimumMonth());
+
+    mesInicio.min = minimum;
+    mesFim.min = mesInicio.value || minimum;
+
+    if (mesInicio.value) {
+        mesFim.min = mesInicio.value;
+    }
+
+    if (mesFim.value) {
+        mesInicio.max = mesFim.value;
+    } else {
+        mesInicio.removeAttribute("max");
+    }
+}
+
+
+function dateToMonthValue(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+
+function getMonthRangeDates() {
+
+    const range = getSelectedMonthRange();
+
+    if (!range) return null;
+
+    const first = range.first < getMinimumMonth()
+        ? getMinimumMonth()
+        : range.first;
+
+    const last = new Date(
+        range.last.getFullYear(),
+        range.last.getMonth() + 1,
+        0
+    );
+
+    return {
+        first,
+        last
+    };
+}
+
+
+function resetDateSelection() {
+
+    startDate = null;
+    endDate = null;
+    offDays = [];
+
+    const range = getMonthRangeDates();
+
+    currentDate = range
+        ? new Date(range.first)
+        : firstDayOfMonth(getToday());
+
+    updateDateSummary();
+    renderCalendar();
+    updateWorkdaySummary();
+    updateAutomaticCalculation();
+}
+
+
+mesInicio.addEventListener("change", () => {
+
+    const minimum = dateToMonthValue(getMinimumMonth());
+
+    if (mesInicio.value < minimum) {
+        mesInicio.value = minimum;
+    }
+
+    if (mesFim.value && mesFim.value < mesInicio.value) {
+        mesFim.value = mesInicio.value;
+    }
+
+    updateMonthLimits();
+    updatePeriodDuration();
+    resetDateSelection();
+});
+
+
+mesFim.addEventListener("change", () => {
+
+    if (mesInicio.value && mesFim.value < mesInicio.value) {
+        mesFim.value = mesInicio.value;
+    }
+
+    updateMonthLimits();
+    updatePeriodDuration();
+    resetDateSelection();
+});
+
+
+/* 5. CONFIGURAÇÃO DOS DIAS ATIVOS */
+
+function getWorkdayMode() {
+    return document.querySelector('input[name="workdayMode"]:checked')?.value || "all";
+}
+
+
+function isWeekend(date) {
+    return date.getDay() === 0 || date.getDay() === 6;
+}
+
+
+function isOffDay(date) {
+
+    const iso = typeof date === "string"
+        ? date
+        : dateToISO(date);
+
+    if (workdayMode === "weekdays") {
+        return isWeekend(parseLocalDate(iso));
+    }
+
+    if (workdayMode === "custom") {
+        return offDays.includes(iso);
+    }
+
+    return false;
+}
+
+
+function isActiveDay(date) {
+    return !isOffDay(date);
+}
+
+
+function countActiveDays(start, end) {
+
+    if (!start || !end || end < start) return 0;
+
+    let count = 0;
+
+    const current = new Date(start);
+
+    while (current <= end) {
+
+        if (isActiveDay(current)) {
+            count++;
+        }
+
+        current.setDate(current.getDate() + 1);
+    }
+
+    return count;
+}
+
+
+function countOffDays(start, end) {
+
+    if (!start || !end || end < start) return 0;
+
+    return calculateDays(start, end) - countActiveDays(start, end);
+}
+
+
+function updateWorkdaySummary() {
+
+    const custom = workdayMode === "custom";
+
+    customDaysPanel.hidden = !custom;
+
+    if (!startDate || !endDate) {
+        activeDaysCount.textContent = "0";
+        offDaysCount.textContent = "0";
+        return;
+    }
+
+    activeDaysCount.textContent =
+        String(countActiveDays(startDate, endDate));
+
+    offDaysCount.textContent =
+        String(countOffDays(startDate, endDate));
+}
+
+
+workdayRadios.forEach(radio => {
+
+    radio.addEventListener("change", () => {
+
+        workdayMode = getWorkdayMode();
+
+        if (workdayMode === "weekdays") {
+            offDays = [];
+        }
+
+        if (workdayMode === "all") {
+            offDays = [];
+        }
+
+        updateWorkdaySummary();
+        renderCalendar();
+        updateAutomaticCalculation();
+    });
+
+});
+
+
+/* 6. CALENDÁRIO */
 
 function updateCalendarTitle() {
 
@@ -311,15 +538,24 @@ function updateCalendarTitle() {
             month: "long",
             year: "numeric"
         });
-
 }
 
 
 function updateNavigationButtons() {
 
-    prevMonthButton.disabled =
-        currentDate <= firstDayOfMonth(getToday());
+    const range = getMonthRangeDates();
 
+    if (!range) {
+        prevMonthButton.disabled = true;
+        nextMonthButton.disabled = true;
+        return;
+    }
+
+    const firstMonth = firstDayOfMonth(range.first);
+    const lastMonth = firstDayOfMonth(range.last);
+
+    prevMonthButton.disabled = currentDate <= firstMonth;
+    nextMonthButton.disabled = currentDate >= lastMonth;
 }
 
 
@@ -328,14 +564,19 @@ function renderCalendar() {
     calendarDays.replaceChildren();
 
     updateCalendarTitle();
-
     updateNavigationButtons();
+
+    const range = getMonthRangeDates();
+
+    if (!range) {
+        calendarTitle.textContent = "Selecione o período";
+        return;
+    }
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
     const firstWeekday = new Date(year, month, 1).getDay();
-
     const count = new Date(year, month + 1, 0).getDate();
 
     const today = getToday();
@@ -344,25 +585,37 @@ function renderCalendar() {
     for (let i = 0; i < firstWeekday; i++) {
 
         const blank = document.createElement("div");
-
         blank.className = "calendar-day empty";
 
         calendarDays.appendChild(blank);
-
     }
 
 
     for (let day = 1; day <= count; day++) {
 
         const date = new Date(year, month, day);
+        const iso = dateToISO(date);
 
         const button = document.createElement("button");
 
         button.type = "button";
-
         button.textContent = String(day);
-
         button.className = "calendar-day";
+
+        button.setAttribute("aria-label", formatDate(date));
+
+
+        const insideRange =
+            date >= range.first &&
+            date <= range.last;
+
+
+        if (!insideRange || date < today) {
+
+            button.classList.add("disabled");
+            button.disabled = true;
+
+        }
 
 
         if (sameDate(date, today)) {
@@ -370,22 +623,11 @@ function renderCalendar() {
         }
 
 
-        if (date < today) {
-
-            button.classList.add("disabled");
-
-            button.disabled = true;
-
-        }
-
-
         if (
             (startDate && sameDate(date, startDate)) ||
             (endDate && sameDate(date, endDate))
         ) {
-
             button.classList.add("selected");
-
         }
 
 
@@ -395,16 +637,40 @@ function renderCalendar() {
             date > startDate &&
             date < endDate
         ) {
-
             button.classList.add("in-range");
-
         }
 
 
-        button.addEventListener("click", () => selectDate(date));
+        if (
+            startDate &&
+            endDate &&
+            date >= startDate &&
+            date <= endDate &&
+            isOffDay(date)
+        ) {
+            button.classList.add("off-day");
+            button.setAttribute("aria-label", `${formatDate(date)} - dia sem depósito`);
+        }
+
+
+        if (
+            startDate &&
+            endDate &&
+            date >= startDate &&
+            date <= endDate &&
+            isActiveDay(date) &&
+            workdayMode === "custom"
+        ) {
+            button.classList.add("active-day");
+        }
+
+
+        if (insideRange && date >= today) {
+            button.addEventListener("click", () => selectDate(date));
+        }
+
 
         calendarDays.appendChild(button);
-
     }
 
 }
@@ -414,17 +680,24 @@ function selectDate(date) {
 
     clearError();
 
+    const range = getMonthRangeDates();
+
+    if (!range || date < range.first || date > range.last) {
+        return;
+    }
+
+
     if (!startDate || endDate) {
 
         startDate = new Date(date);
-
         endDate = null;
+        offDays = [];
 
     } else if (date < startDate) {
 
-        endDate = startDate;
-
         startDate = new Date(date);
+        endDate = null;
+        offDays = [];
 
     } else {
 
@@ -432,41 +705,11 @@ function selectDate(date) {
 
     }
 
+
     updateDateSummary();
-
+    updateWorkdaySummary();
     renderCalendar();
-
     updateAutomaticCalculation();
-
-}
-
-
-function updateDateSummary() {
-
-    startDateElement.textContent = formatDate(startDate);
-
-    endDateElement.textContent = formatDate(endDate);
-
-
-    if (!startDate) {
-
-        selectionMessage.textContent =
-            "Selecione a data inicial e a data final no calendário.";
-
-    } else if (!endDate) {
-
-        selectionMessage.textContent =
-            "Agora selecione a data final do seu planejamento.";
-
-    } else {
-
-        const days = calculateDays(startDate, endDate);
-
-        selectionMessage.textContent =
-            `Seu planejamento terá ${days} ${days === 1 ? "dia" : "dias"}, contando a data inicial e a final.`;
-
-    }
-
 }
 
 
@@ -478,70 +721,108 @@ function changeMonth(direction) {
         1
     );
 
-    if (next < firstDayOfMonth(getToday())) {
+    const range = getMonthRangeDates();
+
+    if (!range) return;
+
+    const firstMonth = firstDayOfMonth(range.first);
+    const lastMonth = firstDayOfMonth(range.last);
+
+    if (next < firstMonth || next > lastMonth) {
         return;
     }
 
     currentDate = next;
 
-    startDate = null;
-
-    endDate = null;
-
-    updateMonthInput();
-
-    updateDateSummary();
-
     renderCalendar();
-
-    updateAutomaticCalculation();
-
 }
 
 
 prevMonthButton.addEventListener("click", () => changeMonth(-1));
-
 nextMonthButton.addEventListener("click", () => changeMonth(1));
 
 
-mesMeta.addEventListener("change", () => {
+function updateDateSummary() {
 
-    if (!/^\d{4}-\d{2}$/.test(mesMeta.value)) {
+    startDateElement.textContent = formatDate(startDate);
+    endDateElement.textContent = formatDate(endDate);
+
+
+    if (!startDate) {
+
+        selectionMessage.textContent =
+            "Selecione a data inicial no calendário.";
+
+    } else if (!endDate) {
+
+        selectionMessage.textContent =
+            "Agora selecione a data final do seu planejamento.";
+
+    } else {
+
+        const totalDays = calculateDays(startDate, endDate);
+        const activeDays = countActiveDays(startDate, endDate);
+
+        selectionMessage.textContent =
+            `Seu planejamento terá ${totalDays} dias corridos e ${activeDays} dias ativos.`;
+    }
+
+}
+
+
+/* PERSONALIZAÇÃO DE FOLGAS */
+
+function toggleOffDay(date) {
+
+    if (
+        !startDate ||
+        !endDate ||
+        date < startDate ||
+        date > endDate ||
+        date < getToday()
+    ) {
         return;
     }
 
-    const [year, month] = mesMeta.value.split("-").map(Number);
+    const iso = dateToISO(date);
 
-    const chosen = new Date(year, month - 1, 1);
+    if (offDays.includes(iso)) {
+        offDays = offDays.filter(item => item !== iso);
+    } else {
+        offDays.push(iso);
+    }
 
-    currentDate =
-        chosen < firstDayOfMonth(getToday())
-            ? firstDayOfMonth(getToday())
-            : chosen;
+    offDays.sort();
 
-    startDate = null;
-
-    endDate = null;
-
-    updateMonthInput();
-
-    updateDateSummary();
-
+    updateWorkdaySummary();
     renderCalendar();
-
+    updateDateSummary();
     updateAutomaticCalculation();
+}
 
-});
 
-
-/* 4. PLANEJAMENTO E PERSISTÊNCIA */
+/* 7. PLANEJAMENTO E PERSISTÊNCIA */
 
 function getPlanInputs() {
 
+    const category = getCategoryData();
+
     return {
+
         name: nomeMeta.value.trim(),
+
+        category: category.category,
+
+        customCategory: category.customCategory,
+
         goalCents: readMoney(valorMeta),
-        availableCents: readMoney(valorDisponivel)
+
+        availableCents: readMoney(valorDisponivel),
+
+        workdayMode,
+
+        offDays: [...offDays]
+
     };
 
 }
@@ -553,9 +834,23 @@ function validatePlan(showMessages = false) {
 
     let message = "";
 
-    if (!data.name) {
+    const monthRange = getSelectedMonthRange();
 
-        message = "Informe o nome da sua meta.";
+
+    if (!data.category) {
+
+        message = "Selecione uma categoria para seu objetivo.";
+
+    } else if (
+        data.category === "Outros" &&
+        !data.customCategory
+    ) {
+
+        message = "Informe sua categoria personalizada.";
+
+    } else if (!data.name) {
+
+        message = "Dê um nome ao seu objetivo.";
 
     } else if (
         !validCents(data.goalCents) ||
@@ -572,18 +867,37 @@ function validatePlan(showMessages = false) {
 
         message = "O valor disponível não pode superar a meta total.";
 
+    } else if (!monthRange) {
+
+        message = "Selecione um período de planejamento válido.";
+
     } else if (!startDate || !endDate) {
 
         message = "Selecione a data inicial e a data final.";
 
+    } else if (endDate < startDate) {
+
+        message = "A data final deve ser posterior à data inicial.";
+
+    } else if (
+        startDate < monthRange.first ||
+        endDate > monthRange.last
+    ) {
+
+        message = "As datas precisam estar dentro dos meses selecionados.";
+
+    } else if (countActiveDays(startDate, endDate) === 0) {
+
+        message = "Seu planejamento precisa ter pelo menos um dia ativo.";
+
     }
+
 
     if (showMessages && message) {
         showError(message);
     }
 
     return !message;
-
 }
 
 
@@ -630,10 +944,15 @@ function savePlan() {
     const data = getPlanInputs();
 
     const next = {
+
         ...data,
+
         startDate: dateToISO(startDate),
+
         endDate: dateToISO(endDate)
+
     };
+
 
     const changed =
         plan && planSignature(plan) !== planSignature(next);
@@ -666,6 +985,7 @@ function savePlan() {
 
     };
 
+
     return persistData();
 
 }
@@ -684,18 +1004,15 @@ function updateAutomaticCalculation() {
 
     }
 
+
     if (!savePlan()) {
-
         restorePlanFields();
-
         return;
-
     }
 
+
     clearError();
-
     updateDashboard();
-
 }
 
 
@@ -703,7 +1020,7 @@ function restorePlanFields() {
 
     if (!plan) return;
 
-    nomeMeta.value = plan.name;
+    nomeMeta.value = plan.name || "";
 
     valorMeta.value = formatMoney(plan.goalCents);
 
@@ -712,20 +1029,61 @@ function restorePlanFields() {
             ? formatMoney(plan.availableCents)
             : "";
 
-    startDate = parseLocalDate(plan.startDate);
 
+    categoriaMeta.value =
+        ["Veículo", "Casa", "Viagem", "Educação", "Reserva financeira", "Outros"]
+            .includes(plan.category)
+            ? plan.category
+            : "Outros";
+
+
+    categoriaPersonalizada.value =
+        plan.customCategory || "Meta anterior";
+
+
+    updateCategoryField();
+
+
+    workdayMode =
+        ["all", "weekdays", "custom"].includes(plan.workdayMode)
+            ? plan.workdayMode
+            : "all";
+
+
+    offDays = Array.isArray(plan.offDays)
+        ? plan.offDays.filter(value => parseLocalDate(value))
+        : [];
+
+
+    workdayRadios.forEach(radio => {
+        radio.checked = radio.value === workdayMode;
+    });
+
+
+    startDate = parseLocalDate(plan.startDate);
     endDate = parseLocalDate(plan.endDate);
 
+
+    if (startDate && endDate) {
+
+        mesInicio.value = dateToMonthValue(startDate);
+        mesFim.value = dateToMonthValue(endDate);
+
+        currentDate = firstDayOfMonth(startDate);
+
+    }
+
+
+    updateMonthLimits();
+    updatePeriodDuration();
     updateDateSummary();
-
+    updateWorkdaySummary();
     renderCalendar();
-
     updateDashboard();
-
 }
 
 
-/* 5. CÁLCULOS FINANCEIROS */
+/* 8. CÁLCULOS FINANCEIROS */
 
 function dailyTotalOn(dateISO) {
 
@@ -824,11 +1182,11 @@ function getPlanMetrics() {
 
     if (today < planStart) {
 
-        daysLeft = calculateDays(planStart, planEnd);
+        daysLeft = countActiveDays(planStart, planEnd);
 
     } else if (today <= planEnd) {
 
-        daysLeft = calculateDays(today, planEnd);
+        daysLeft = countActiveDays(today, planEnd);
 
     }
 
@@ -863,14 +1221,15 @@ function getPlanMetrics() {
         balanceBeforeToday,
         balanceAfterToday,
         accumulated,
-        progress
+        progress,
+        todayIsActive: isActiveDay(today)
 
     };
 
 }
 
 
-/* 6. ATUALIZAÇÃO DO PAINEL */
+/* 9. ATUALIZAÇÃO DO PAINEL */
 
 function updateDashboard() {
 
@@ -883,11 +1242,14 @@ function updateDashboard() {
 
     todayLabel.textContent = formatDate(m.today);
 
-    todayTarget.textContent = formatMoney(
-        m.today >= m.planStart && m.today <= m.planEnd
-            ? m.dailyTarget
-            : 0
-    );
+
+    todayTarget.textContent =
+        m.today >= m.planStart &&
+        m.today <= m.planEnd &&
+        m.todayIsActive
+            ? formatMoney(m.dailyTarget)
+            : "R$ 0,00";
+
 
     todayRealized.textContent =
         formatMoney(m.todayRealizedCents);
@@ -905,17 +1267,22 @@ function updateDashboard() {
     if (m.today < m.planStart) {
 
         resultDescription.textContent =
-            `Faltam ${formatMoney(m.balanceAfterToday)}. Sua meta diária prevista para o início do período é ${formatMoney(m.dailyTarget)}, considerando ${m.daysLeft} dias. Valores registrados antes do início reduzem essa previsão.`;
+            `Faltam ${formatMoney(m.balanceAfterToday)}. Sua meta diária prevista para o início do período é ${formatMoney(m.dailyTarget)}, considerando ${m.daysLeft} dias ativos.`;
 
     } else if (m.today > m.planEnd) {
 
         resultDescription.textContent =
             `O período terminou. Saldo restante: ${formatMoney(m.balanceAfterToday)}.`;
 
+    } else if (!m.todayIsActive) {
+
+        resultDescription.textContent =
+            `Hoje é um dia de folga sem depósito. Restam ${m.daysLeft} dias ativos no planejamento.`;
+
     } else {
 
         resultDescription.textContent =
-            `Faltam ${formatMoney(m.balanceAfterToday)} para alcançar "${plan.name}". Restam ${m.daysLeft} ${m.daysLeft === 1 ? "dia" : "dias"} no período, incluindo hoje.`;
+            `Faltam ${formatMoney(m.balanceAfterToday)} para alcançar "${plan.name}". Restam ${m.daysLeft} dias ativos, incluindo hoje.`;
 
     }
 
@@ -935,13 +1302,13 @@ function updateDashboard() {
 
 
     saveDailyButton.disabled =
-        m.today < m.planStart || m.today > m.planEnd;
+        m.today < m.planStart ||
+        m.today > m.planEnd ||
+        !m.todayIsActive;
 
 
     updateDailyStatus(m);
-
     renderHistory();
-
     renderMovementHistory();
 
 }
@@ -955,7 +1322,6 @@ function updateDailyStatus(m) {
             "O período oficial ainda não começou. Você já pode adicionar valores em Movimentações financeiras.";
 
         dailyStatus.className = "daily-status neutral";
-
         return;
 
     }
@@ -973,6 +1339,17 @@ function updateDailyStatus(m) {
                 ? "daily-status negative"
                 : "daily-status positive";
 
+        return;
+
+    }
+
+
+    if (!m.todayIsActive) {
+
+        dailyStatus.textContent =
+            "Hoje está marcado como dia de folga sem depósito. O registro diário está desativado.";
+
+        dailyStatus.className = "daily-status neutral";
         return;
 
     }
@@ -1016,14 +1393,13 @@ function updateDailyStatus(m) {
 }
 
 
-/* 7. RESULTADO DIÁRIO */
+/* 10. RESULTADO DIÁRIO */
 
 function saveDailyResult() {
 
     if (!plan) {
 
         showError("Crie um planejamento antes de registrar resultados.");
-
         return;
 
     }
@@ -1035,13 +1411,23 @@ function saveDailyResult() {
     }
 
 
+    if (!m.todayIsActive) {
+
+        dailyStatus.textContent =
+            "Este dia está marcado como folga sem depósito.";
+
+        dailyStatus.className = "daily-status neutral";
+        return;
+
+    }
+
+
     if (!realizedToday.value.trim()) {
 
         dailyStatus.textContent =
             "Informe quanto realizou hoje. Para registrar um dia sem produção, digite 0.";
 
         dailyStatus.className = "daily-status negative";
-
         return;
 
     }
@@ -1051,11 +1437,8 @@ function saveDailyResult() {
 
     if (!validCents(amount)) {
 
-        dailyStatus.textContent =
-            "Informe um valor válido.";
-
+        dailyStatus.textContent = "Informe um valor válido.";
         dailyStatus.className = "daily-status negative";
-
         return;
 
     }
@@ -1063,17 +1446,12 @@ function saveDailyResult() {
 
     const old = plan.history[m.todayISO];
 
-    const total =
-        (old?.realizedCents || 0) + amount;
-
+    const total = (old?.realizedCents || 0) + amount;
 
     if (!Number.isSafeInteger(total)) return;
 
 
-    // Registros adicionais no mesmo dia são somados.
-
-    const target =
-        old?.targetCents ?? m.dailyTarget;
+    const target = old?.targetCents ?? m.dailyTarget;
 
 
     plan.history[m.todayISO] = {
@@ -1099,7 +1477,7 @@ function saveDailyResult() {
 saveDailyButton.addEventListener("click", saveDailyResult);
 
 
-/* 8. MOVIMENTAÇÕES FINANCEIRAS */
+/* 11. MOVIMENTAÇÕES FINANCEIRAS */
 
 function updateMovementTimestamp() {
 
@@ -1160,11 +1538,9 @@ function saveMovement() {
     persistData();
 
     movementAmount.value = "";
-
     movementNote.value = "";
 
     updateMovementTimestamp();
-
     updateDashboard();
 
 
@@ -1208,39 +1584,24 @@ function renderMovementHistory() {
     for (const entry of entries) {
 
         const item = document.createElement("div");
-
         item.className = "movement-item";
 
-
         const info = document.createElement("div");
-
         info.className = "movement-item-info";
 
-
         const title = document.createElement("strong");
-
-        title.textContent =
-            entry.note || "Movimentação financeira";
-
+        title.textContent = entry.note || "Movimentação financeira";
 
         const timestamp = document.createElement("span");
-
         timestamp.className = "movement-item-meta";
-
         timestamp.textContent =
             dateTimeFormatter.format(new Date(entry.createdAt));
 
-
         const amount = document.createElement("span");
-
         amount.className = "movement-item-value";
-
-        amount.textContent =
-            `+${formatMoney(entry.amountCents)}`;
-
+        amount.textContent = `+${formatMoney(entry.amountCents)}`;
 
         info.append(title, timestamp);
-
         item.append(info, amount);
 
         movementHistoryList.appendChild(item);
@@ -1250,7 +1611,7 @@ function renderMovementHistory() {
 }
 
 
-/* 9. HISTÓRICO DIÁRIO */
+/* 12. HISTÓRICO DIÁRIO */
 
 function renderHistory() {
 
@@ -1283,41 +1644,28 @@ function renderHistory() {
     for (const [date, entry] of entries) {
 
         const item = document.createElement("div");
-
         item.className = "history-item";
 
-
         const dateLabel = document.createElement("span");
-
         dateLabel.className = "history-date";
-
-        dateLabel.textContent =
-            formatDate(parseLocalDate(date));
-
+        dateLabel.textContent = formatDate(parseLocalDate(date));
 
         const values = document.createElement("div");
-
         values.className = "history-values";
 
-
         const realized = document.createElement("strong");
-
         realized.textContent =
             `Realizado: ${formatMoney(entry.realizedCents)}`;
-
 
         const difference = document.createElement("span");
 
         difference.className =
             `history-difference ${entry.differenceCents >= 0 ? "positive" : "negative"}`;
 
-
         difference.textContent =
             `${entry.differenceCents >= 0 ? "+" : "-"}${formatMoney(Math.abs(entry.differenceCents))} em relação à previsão`;
 
-
         values.append(realized, difference);
-
         item.append(dateLabel, values);
 
         historyList.appendChild(item);
@@ -1327,7 +1675,7 @@ function renderHistory() {
 }
 
 
-/* 10. RECUPERAÇÃO DOS DADOS */
+/* 13. RECUPERAÇÃO DOS DADOS */
 
 function loadSavedData() {
 
@@ -1348,9 +1696,7 @@ function loadSavedData() {
             !parseLocalDate(saved.startDate) ||
             !parseLocalDate(saved.endDate)
         ) {
-
             return;
-
         }
 
 
@@ -1363,17 +1709,13 @@ function loadSavedData() {
                 !parseLocalDate(date) ||
                 !validCents(item?.realizedCents)
             ) {
-
                 continue;
-
             }
-
 
             const target =
                 validCents(item.targetCents)
                     ? item.targetCents
                     : 0;
-
 
             history[date] = {
 
@@ -1418,6 +1760,10 @@ function loadSavedData() {
 
             name: String(saved.name || ""),
 
+            category: String(saved.category || "Outros"),
+
+            customCategory: String(saved.customCategory || ""),
+
             goalCents: saved.goalCents,
 
             availableCents: saved.availableCents,
@@ -1425,6 +1771,15 @@ function loadSavedData() {
             startDate: saved.startDate,
 
             endDate: saved.endDate,
+
+            workdayMode:
+                ["all", "weekdays", "custom"].includes(saved.workdayMode)
+                    ? saved.workdayMode
+                    : "all",
+
+            offDays: Array.isArray(saved.offDays)
+                ? saved.offDays.filter(value => parseLocalDate(value))
+                : [],
 
             history,
 
@@ -1449,23 +1804,15 @@ function loadSavedData() {
 }
 
 
-/* 11. EVENTOS E ATUALIZAÇÃO DA DATA */
-
-// Configuração dos campos financeiros.
+/* 14. EVENTOS E ATUALIZAÇÃO */
 
 configureMoneyInput(valorMeta, updateAutomaticCalculation);
-
 configureMoneyInput(valorDisponivel, updateAutomaticCalculation);
-
 configureMoneyInput(realizedToday);
-
 configureMoneyInput(movementAmount);
 
 
-nomeMeta.addEventListener(
-    "input",
-    updateAutomaticCalculation
-);
+nomeMeta.addEventListener("input", updateAutomaticCalculation);
 
 
 metaForm.addEventListener("submit", event => {
@@ -1479,7 +1826,7 @@ metaForm.addEventListener("submit", event => {
 });
 
 
-/* 12. LIMPAR FORMULÁRIO */
+/* 15. LIMPAR FORMULÁRIO */
 
 clearButton.addEventListener("click", () => {
 
@@ -1498,9 +1845,7 @@ clearButton.addEventListener("click", () => {
 
         console.error(error);
 
-        showError(
-            "Não foi possível limpar os dados salvos."
-        );
+        showError("Não foi possível limpar os dados salvos.");
 
         return;
 
@@ -1510,8 +1855,10 @@ clearButton.addEventListener("click", () => {
     plan = null;
 
     startDate = null;
-
     endDate = null;
+    offDays = [];
+
+    workdayMode = "all";
 
     currentDate = firstDayOfMonth(getToday());
 
@@ -1519,15 +1866,26 @@ clearButton.addEventListener("click", () => {
     metaForm.reset();
 
     realizedToday.value = "";
-
     movementAmount.value = "";
-
     movementNote.value = "";
 
+    categoriaPersonalizada.value = "";
 
-    updateMonthInput();
+    updateCategoryField();
+
+    workdayRadios.forEach(radio => {
+        radio.checked = radio.value === "all";
+    });
+
+
+    mesInicio.value = dateToMonthValue(getMinimumMonth());
+    mesFim.value = "";
+
+    updateMonthLimits();
+    updatePeriodDuration();
 
     updateDateSummary();
+    updateWorkdaySummary();
 
     renderCalendar();
 
@@ -1536,48 +1894,35 @@ clearButton.addEventListener("click", () => {
     setMovementStatus("");
 
 
-    trackingTitle.textContent =
-        "Acompanhamento diário";
+    trackingTitle.textContent = "Acompanhamento diário";
 
-    todayLabel.textContent =
-        formatDate(getToday());
+    todayLabel.textContent = formatDate(getToday());
 
     todayTarget.textContent = "R$ 0,00";
-
     todayRealized.textContent = "R$ 0,00";
-
     remainingBalance.textContent = "R$ 0,00";
-
     remainingDays.textContent = "0";
 
     dailyResult.textContent = "R$ 0,00";
-
 
     resultDescription.textContent =
         "O valor diário será calculado após preencher seu planejamento.";
 
 
     progressFill.style.width = "0%";
-
     progressBar.setAttribute("aria-valuenow", "0");
-
     progressText.textContent = "0%";
-
 
     progressDescription.textContent =
         "O progresso será atualizado conforme seus resultados.";
 
-
-    dailyStatus.textContent =
-        "Crie uma meta para começar.";
-
+    dailyStatus.textContent = "Crie uma meta para começar.";
     dailyStatus.className = "daily-status neutral";
 
     saveDailyButton.disabled = true;
 
 
     renderHistory();
-
     renderMovementHistory();
 
     updateMovementTimestamp();
@@ -1585,7 +1930,7 @@ clearButton.addEventListener("click", () => {
 });
 
 
-/* 13. ATUALIZAÇÃO AUTOMÁTICA À MEIA-NOITE */
+/* 16. ATUALIZAÇÃO AUTOMÁTICA À MEIA-NOITE */
 
 function scheduleMidnightRefresh() {
 
@@ -1614,26 +1959,23 @@ function refreshForNewDay() {
 
     const today = getToday();
 
-    if (currentDate < firstDayOfMonth(today)) {
+    const range = getMonthRangeDates();
 
+    if (!range) {
         currentDate = firstDayOfMonth(today);
-
+    } else if (currentDate < firstDayOfMonth(range.first)) {
+        currentDate = firstDayOfMonth(range.first);
     }
 
 
-    updateMonthInput();
-
     renderCalendar();
-
     updateMovementTimestamp();
 
     todayLabel.textContent = formatDate(today);
 
 
     if (plan) {
-
         updateDashboard();
-
     }
 
 
@@ -1642,33 +1984,37 @@ function refreshForNewDay() {
 }
 
 
-document.addEventListener(
-    "visibilitychange",
-    () => {
+document.addEventListener("visibilitychange", () => {
 
-        if (!document.hidden) {
-
-            refreshForNewDay();
-
-        }
-
+    if (!document.hidden) {
+        refreshForNewDay();
     }
-);
+
+});
 
 
-window.addEventListener(
-    "focus",
-    refreshForNewDay
-);
+window.addEventListener("focus", refreshForNewDay);
 
 
-/* 14. INICIALIZAÇÃO */
+/* 17. INICIALIZAÇÃO */
 
 function initializeApp() {
 
-    updateMonthInput();
+    const minimum = dateToMonthValue(getMinimumMonth());
+
+    if (!mesInicio.value) {
+        mesInicio.value = minimum;
+    }
+
+    updateMonthLimits();
+    updatePeriodDuration();
+
+    workdayMode = getWorkdayMode();
+
+    updateCategoryField();
 
     updateDateSummary();
+    updateWorkdaySummary();
 
     renderCalendar();
 
