@@ -119,7 +119,31 @@ cd Drive-control-planner
 
 4. Execute o arquivo `index.html` no navegador.
 
+---
+
+## 🚀 Experimente o DriveControl
+
+<p align="center">
+  <strong>Quer conhecer o projeto na prática?</strong>
+  <br>
+  Acesse a versão online e experimente as funcionalidades do DriveControl!
+</p>
+
+<p align="center">
+  <a href="https://gabrieljdsantos.github.io/Drive-control-planner/index.html">
+    <img src="https://img.shields.io/badge/TESTAR%20APLICAÇÃO- Acesse%20aqui-C49A5A?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Testar DriveControl">
+  </a>
+</p>
+
+<p align="center">
+  💻 Aplicação web • Acesso gratuito • Não precisa instalar
+</p>
+
+---
+
 ## Desenvolvedor
+
+
 
 **Gabriel Santos**
 
