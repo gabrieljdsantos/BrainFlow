@@ -1,3 +1,4 @@
+
 /* ========================================
    DRIVECONTROL - METAS FINANCEIRAS
    Planejamento, calendário e acompanhamento
@@ -442,7 +443,8 @@ function isOffDay(date) {
         : dateToISO(date);
 
     if (workdayMode === "weekdays") {
-        return isWeekend(parseLocalDate(iso));
+        const parsedDate = parseLocalDate(iso);
+        return parsedDate ? isWeekend(parsedDate) : false;
     }
 
     if (workdayMode === "custom") {
@@ -513,17 +515,19 @@ workdayRadios.forEach(radio => {
 
         workdayMode = getWorkdayMode();
 
-        if (workdayMode === "weekdays") {
-            offDays = [];
-        }
-
-        if (workdayMode === "all") {
+        if (workdayMode === "weekdays" || workdayMode === "all") {
             offDays = [];
         }
 
         updateWorkdaySummary();
         renderCalendar();
+
+        // Atualiza a frase de dias corridos e ativos.
+        updateDateSummary();
+
+        // Recalcula a meta diária conforme os dias ativos.
         updateAutomaticCalculation();
+
     });
 
 });
@@ -686,6 +690,23 @@ function selectDate(date) {
         return;
     }
 
+    /*
+       MODO PERSONALIZADO:
+       Se o período já estiver selecionado, clicar em uma data
+       dentro dele alterna entre dia ativo e dia de folga.
+    */
+
+    if (
+        workdayMode === "custom" &&
+        startDate &&
+        endDate &&
+        date >= startDate &&
+        date <= endDate
+    ) {
+        toggleOffDay(date);
+        return;
+    }
+
 
     if (!startDate || endDate) {
 
@@ -764,7 +785,7 @@ function updateDateSummary() {
         const activeDays = countActiveDays(startDate, endDate);
 
         selectionMessage.textContent =
-            `Seu planejamento terá ${totalDays} dias corridos e ${activeDays} dias ativos.`;
+            `Seu planejamento terá ${totalDays} dias corridos e ${activeDays} dias ativos para concluir sua meta.`;
     }
 
 }
@@ -773,6 +794,11 @@ function updateDateSummary() {
 /* PERSONALIZAÇÃO DE FOLGAS */
 
 function toggleOffDay(date) {
+
+    // Só permite alternar datas no modo personalizado.
+    if (workdayMode !== "custom") {
+        return;
+    }
 
     if (
         !startDate ||
@@ -794,6 +820,7 @@ function toggleOffDay(date) {
 
     offDays.sort();
 
+    // Atualiza todos os elementos dependentes da seleção.
     updateWorkdaySummary();
     renderCalendar();
     updateDateSummary();
