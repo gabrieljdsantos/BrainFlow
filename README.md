@@ -131,16 +131,16 @@ Estudante de Análise e Desenvolvimento de Sistemas (ADS) e desenvolvedor em for
   <a href="https://github.com/gabrieljdsantos">
     <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
   </a>
-  <a href="SEU_LINK_DO_INSTAGRAM">
+  <a href="https://www.instagram.com/gabriel_jdsantoss/">
     <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram">
   </a>
-  <a href="SEU_LINK_DO_LINKEDIN">
+  <a href="https://www.linkedin.com/in/gabrieljdsantos/">
     <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
   </a>
-  <a href="SEU_LINK_DO_DEVTO">
+  <a href="https://dev.to/gabriel_jdsantos">
     <img src="https://img.shields.io/badge/DEV.to-0A0A0A?style=for-the-badge&logo=devdotto&logoColor=white" alt="DEV.to">
   </a>
-  <a href="SEU_LINK_DO_WHATSAPP">
+  <a href="https://wa.me/5511991273616">
     <img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="WhatsApp">
   </a>
 </p>

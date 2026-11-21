@@ -5,21 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="DriveControl - Gestão financeira inteligente para motoristas.">
+    <meta name="description" content="DriveControl - Suas metas começam aqui.">
 
-    <title>DriveControl | Login</title>
+    <title>DriveControl | Início</title>
 
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/inicio.css">
 </head>
 
-<body>
+<body class="home-page">
 
-    <main class="login-container">
+    <main class="home-container">
 
-        <!-- Área de apresentação -->
-        <section class="login-banner">
+        <!-- LOGOTIPO -->
+        <header class="home-header">
 
-            <!-- Identidade visual DriveControl -->
             <a href="index.html" class="brand-logo">
 
                 <svg
@@ -58,92 +58,102 @@
 
             </a>
 
-            <!-- Apresentação -->
-            <div class="banner-content">
+        </header>
 
-                <h1>Assuma o controle dos seus ganhos.</h1>
 
-                <p>
-                    Organize suas corridas, controle suas despesas
-                    e acompanhe seus resultados em um só lugar.
-                </p>
+        <!-- CONTEÚDO PRINCIPAL -->
+        <section class="home-content">
 
-            </div>
+            <!-- VOLANTE DRIVECONTROL -->
+            <div class="steering-wheel">
 
-            <footer>
-                © 2026 DriveControl. Todos os direitos reservados.
-            </footer>
+                <svg
+                    viewBox="0 0 120 120"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                >
 
-        </section>
+                    <!-- Aro externo -->
+                    <circle
+                        cx="60"
+                        cy="60"
+                        r="43"
+                        stroke="#C49A5A"
+                        stroke-width="9"
+                    />
 
-        <!-- Área de autenticação -->
-        <section class="login-form-container">
+                    <!-- Estrutura interna -->
+                    <path
+                        d="M60 60L60 88"
+                        stroke="#C49A5A"
+                        stroke-width="10"
+                        stroke-linecap="round"
+                    />
 
-            <div class="login-form">
+                    <path
+                        d="M60 60L27 48"
+                        stroke="#C49A5A"
+                        stroke-width="10"
+                        stroke-linecap="round"
+                    />
 
-                <h2>Bem-vindo de volta!</h2>
+                    <path
+                        d="M60 60L93 48"
+                        stroke="#C49A5A"
+                        stroke-width="10"
+                        stroke-linecap="round"
+                    />
 
-                <p class="subtitle">
-                    Entre na sua conta para continuar.
-                </p>
+                    <!-- Centro do volante -->
+                    <circle
+                        cx="60"
+                        cy="60"
+                        r="13"
+                        fill="#C49A5A"
+                    />
 
-                <form id="loginForm">
+                    <circle
+                        cx="60"
+                        cy="60"
+                        r="5"
+                        fill="#172235"
+                    />
 
-                    <div class="input-group">
-
-                        <label for="email">E-mail</label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="seuemail@exemplo.com"
-                            required
-                        >
-
-                    </div>
-
-                    <div class="input-group">
-
-                        <label for="password">Senha</label>
-
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Digite sua senha"
-                            required
-                        >
-
-                    </div>
-
-                    <div class="form-options">
-
-                        <label>
-                            <input type="checkbox" id="remember">
-                            Lembrar acesso
-                        </label>
-
-                        <a href="#">Esqueceu a senha?</a>
-
-                    </div>
-
-                    <button type="submit">
-                        Entrar na plataforma
-                    </button>
-
-                </form>
-
-                <p class="register-link">
-                    Ainda não tem uma conta?
-                    <a href="#">Criar minha conta</a>
-                </p>
+                </svg>
 
             </div>
 
+
+            <!-- MENSAGEM DE APRESENTAÇÃO -->
+            <h1>Suas metas começam aqui.</h1>
+
+            <p>
+                Organize seus ganhos, acompanhe sua evolução
+                e transforme seus objetivos em conquistas.
+            </p>
+
+
+            <!-- BOTÃO DE ACESSO -->
+            <a href="metas.html" class="start-button">
+
+                <span>INICIAR PROJETO</span>
+
+                <span class="button-arrow">→</span>
+
+            </a>
+
         </section>
+
+
+        <!-- RODAPÉ -->
+        <footer class="home-footer">
+
+            © 2026 DriveControl. Todos os direitos reservados.
+
+        </footer>
 
     </main>
-
-    <script src="js/script.js"></script>
 
 </body>
 </html>
