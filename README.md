@@ -60,3 +60,4 @@ Os dados são armazenados no LocalStorage do navegador e permanecem naquele nave
 ## Tecnologias
 
 HTML5 · CSS3 · JavaScript · LocalStorage · Git/GitHub
+ 
