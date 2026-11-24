@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="BrainFlow — seu segundo cérebro para organizar objetivos e acompanhar resultados." name="description"/>
+  <title>
+   BrainFlow | Seu segundo cérebro
+  </title>
+  <link href="css/app.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <main class="shell home-shell">
+   <header class="topbar">
+    <a class="brand" href="index.html">
+     <svg aria-hidden="true" class="brand-mark" fill="none" viewbox="0 0 64 64">
+      <path d="M31 12c-7-8-19-2-17 8-9 3-8 17 0 20-2 10 9 16 17 9V12Z" stroke="currentColor" stroke-width="3">
+      </path>
+      <path d="M33 12c7-8 19-2 17 8 9 3 8 17 0 20 2 10-9 16-17 9V12Z" stroke="currentColor" stroke-width="3">
+      </path>
+      <path d="M32 12v38M18 24h8m-8 11h9m19-11h-8m8 11h-9M22 46l7-6m13 6-7-6" stroke="currentColor" stroke-linecap="round" stroke-width="2.5">
+      </path>
+      <circle cx="32" cy="31" fill="currentColor" r="3">
+      </circle>
+     </svg>
+     <span>
+      Brain
+      <span>
+       Flow
+      </span>
+     </span>
+    </a>
+    <div class="top-actions">
+     <button aria-label="Alternar tema" class="icon-button" data-theme-toggle="">
+     </button>
+    </div>
+   </header>
+   <section class="hero hero-centered">
+    <div class="home-illustration">
+     <img alt="Símbolo BrainFlow" src="assets/logo/brainflow-mark.svg"/>
+    </div>
+    <div class="eyebrow">
+     Organização e inteligência pessoal
+    </div>
+    <h1>
+     Suas metas começam
+     <span style="color:var(--accent)">
+      aqui.
+     </span>
+    </h1>
+    <p>
+     Seu segundo cérebro para transformar planos em resultados. Crie objetivos, acompanhe sua evolução e entenda seu desempenho.
+    </p>
+    <a class="button button-primary" href="metas.html">
+     ＋ Iniciar objetivo
+    </a>
+   </section>
+   <div class="section-head">
+    <h2>
+     Meus objetivos
+    </h2>
+    <span class="muted" id="objective-count">
+     0 objetivos
+    </span>
+   </div>
+   <section aria-live="polite" class="grid" id="objectives">
+   </section>
+   <footer class="footer">
+    © 2026 BrainFlow. Organize. Planeje. Evolua.
+   </footer>
+  </main>
+  <script src="js/core.js">
+  </script>
+  <script src="js/home.js">
+  </script>
+ </body>
+</html>

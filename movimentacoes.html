@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   BrainFlow | Movimentações
+  </title>
+  <link href="css/app.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <main class="shell">
+   <header class="topbar">
+    <a class="brand" href="index.html">
+     <img alt="" class="brand-mark" src="assets/logo/brainflow-mark.svg"/>
+     <span>
+      Brain
+      <span>
+       Flow
+      </span>
+     </span>
+    </a>
+    <div class="top-actions">
+     <button aria-label="Voltar" class="icon-button back-button" data-back="objetivo.html" data-tooltip="Voltar para o painel do objetivo">
+      ←
+     </button>
+     <button class="icon-button" data-theme-toggle="">
+     </button>
+    </div>
+   </header>
+   <div class="eyebrow">
+    Extrato do objetivo
+   </div>
+   <h1 class="panel-title">
+    Movimentações
+   </h1>
+   <p class="muted" id="movement-objective">
+    Todos os valores registrados para este objetivo.
+   </p>
+   <div class="stats-grid">
+    <div class="stat">
+     <small>
+      Valor inicial
+     </small>
+     <strong id="initial-value">
+      R$ 0,00
+     </strong>
+    </div>
+    <div class="stat">
+     <small>
+      Total registrado
+     </small>
+     <strong id="recorded-value">
+      R$ 0,00
+     </strong>
+    </div>
+    <div class="stat">
+     <small>
+      Saldo restante
+     </small>
+     <strong id="movement-remaining">
+      R$ 0,00
+     </strong>
+    </div>
+    <div class="stat">
+     <small>
+      Quantidade de registros
+     </small>
+     <strong id="record-count">
+      0
+     </strong>
+    </div>
+   </div>
+   <div class="section-head">
+    <h2>
+     Extrato financeiro
+    </h2>
+    <a class="button button-primary" id="new-record">
+     ＋ Registrar valor
+    </a>
+   </div>
+   <section class="list" id="movement-list">
+   </section>
+   <footer class="footer">
+    Os registros anteriores são preservados mesmo quando o objetivo é editado.
+   </footer>
+  </main>
+  <script src="js/core.js">
+  </script>
+  <script src="js/movimentacoes.js">
+  </script>
+ </body>
+</html>

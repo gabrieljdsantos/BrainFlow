@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   BrainFlow | Registrar valores
+  </title>
+  <link href="css/app.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <main class="shell form-layout">
+   <header class="topbar">
+    <a class="brand" href="index.html">
+     <img alt="" class="brand-mark" src="assets/logo/brainflow-mark.svg"/>
+     <span>
+      Brain
+      <span>
+       Flow
+      </span>
+     </span>
+    </a>
+    <div class="top-actions">
+     <button aria-label="Voltar" class="icon-button back-button" data-back="objetivo.html" data-tooltip="Voltar para o painel do objetivo">
+      ←
+     </button>
+     <button class="icon-button" data-theme-toggle="">
+     </button>
+    </div>
+   </header>
+   <div class="eyebrow">
+    Registro financeiro
+   </div>
+   <h1 class="panel-title">
+    Registrar valores
+   </h1>
+   <p class="muted" id="register-objective">
+    Registre o valor que conseguiu fazer para seu objetivo.
+   </p>
+   <section class="card">
+    <form id="record-form">
+     <div class="field">
+      <label for="amount">
+       Quanto você quer guardar hoje? (R$)
+      </label>
+      <input id="amount" inputmode="decimal" placeholder="R$ 0,00" required=""/>
+     </div>
+     <div class="field" style="margin-top:16px">
+      <label for="source">
+       De onde veio esse valor?
+      </label>
+      <input id="source" maxlength="80" placeholder="Ex.: Trabalho, PIX, reserva financeira, sobrou uma grana..." required=""/>
+      <small>
+       Escreva a origem para identificar esse lançamento no extrato.
+      </small>
+     </div>
+     <div class="field" style="margin-top:16px">
+      <label for="record-date">
+       Data do registro
+      </label>
+      <input id="record-date" required="" type="date"/>
+     </div>
+     <div class="field" style="margin-top:16px">
+      <label for="note">
+       Observação (opcional)
+      </label>
+      <input id="note" maxlength="150" placeholder="Ex.: ganhos do período da manhã"/>
+     </div>
+     <p class="error" id="record-error">
+     </p>
+     <div class="form-actions">
+      <button class="button button-primary" type="submit">
+       Salvar registro
+      </button>
+      <a class="button button-secondary" id="cancel-record">
+       Cancelar
+      </a>
+     </div>
+    </form>
+   </section>
+   <footer class="footer">
+    Os registros serão vinculados somente a este objetivo.
+   </footer>
+  </main>
+  <div aria-labelledby="confirm-title" aria-modal="true" class="modal-backdrop hidden" id="confirm-modal" role="dialog">
+   <section class="modal modal-centered">
+    <div class="eyebrow">
+     Conferir registro
+    </div>
+    <h2 id="confirm-title">
+     Esse valor está correto?
+    </h2>
+    <p>
+     Confira as informações antes de salvar no seu objetivo.
+    </p>
+    <div class="confirm-summary">
+     <strong id="confirm-amount">
+      R$ 0,00
+     </strong>
+     <span id="confirm-source">
+     </span>
+     <small id="confirm-date">
+     </small>
+    </div>
+    <div class="modal-actions">
+     <button class="button button-primary" id="confirm-save">
+      Sim, salvar registro
+     </button>
+     <button class="button button-secondary" id="confirm-cancel">
+      Voltar e corrigir
+     </button>
+    </div>
+   </section>
+  </div>
+  <div class="modal-backdrop hidden" id="success-modal">
+   <section class="modal">
+    <div class="eyebrow">
+     Registro salvo
+    </div>
+    <h2>
+     Valor registrado com sucesso!
+    </h2>
+    <p>
+     Seu acompanhamento e seus gráficos já foram atualizados. Quer conferir como ficou seu desempenho?
+    </p>
+    <div class="modal-actions">
+     <a class="button button-primary" id="modal-chart">
+      Ver gráficos
+     </a>
+     <a class="button button-secondary" id="modal-track">
+      Ver acompanhamento
+     </a>
+     <a class="button button-secondary" id="modal-panel">
+      Voltar ao painel
+     </a>
+    </div>
+   </section>
+  </div>
+  <script src="js/core.js">
+  </script>
+  <script src="js/registrar.js">
+  </script>
+ </body>
+</html>

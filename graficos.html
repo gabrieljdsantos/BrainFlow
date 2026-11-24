@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   BrainFlow | Gráficos
+  </title>
+  <link href="css/app.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <main class="shell">
+   <header class="topbar">
+    <a class="brand" href="index.html">
+     <img alt="" class="brand-mark" src="assets/logo/brainflow-mark.svg"/>
+     <span>
+      Brain
+      <span>
+       Flow
+      </span>
+     </span>
+    </a>
+    <div class="top-actions">
+     <button aria-label="Voltar" class="icon-button back-button" data-back="objetivo.html" data-tooltip="Voltar para o painel do objetivo">
+      ←
+     </button>
+     <button class="icon-button" data-theme-toggle="">
+     </button>
+    </div>
+   </header>
+   <div class="eyebrow">
+    Análise de desempenho
+   </div>
+   <h1 class="panel-title">
+    Gráficos
+   </h1>
+   <p class="muted" id="chart-objective">
+    Veja a evolução dos valores registrados.
+   </p>
+   <div class="stats-grid">
+    <div class="stat">
+     <small>
+      Meta total
+     </small>
+     <strong id="chart-goal">
+      R$ 0,00
+     </strong>
+    </div>
+    <div class="stat">
+     <small>
+      Acumulado
+     </small>
+     <strong id="chart-total">
+      R$ 0,00
+     </strong>
+    </div>
+    <div class="stat">
+     <small>
+      Progresso da meta
+     </small>
+     <strong id="chart-progress">
+      0%
+     </strong>
+    </div>
+    <div class="stat">
+     <small>
+      Saldo restante
+     </small>
+     <strong id="chart-remaining">
+      R$ 0,00
+     </strong>
+    </div>
+   </div>
+   <div class="section-head week-heading">
+    <div>
+     <h2>
+      Desempenho semanal
+     </h2>
+     <span class="muted" id="week-range">
+     </span>
+    </div>
+    <div class="weekly-controls">
+     <button aria-label="Semana anterior" class="icon-button" id="week-prev" type="button">
+      ‹
+     </button>
+     <button aria-label="Próxima semana" class="icon-button" id="week-next" type="button">
+      ›
+     </button>
+     <span class="muted" id="week-total">
+     </span>
+    </div>
+   </div>
+   <section class="chart-wrap">
+    <div class="bars" id="weekly-chart">
+    </div>
+   </section>
+   <div class="section-head">
+    <h2>
+     Desempenho mensal
+    </h2>
+    <span class="muted" id="month-total">
+    </span>
+   </div>
+   <section class="chart-wrap">
+    <div class="bars" id="monthly-chart">
+    </div>
+   </section>
+   <div class="notice" style="margin-top:18px">
+    Os gráficos consideram os registros deste objetivo. Ao editar o valor ou o período, as referências de desempenho são recalculadas automaticamente.
+   </div>
+   <footer class="footer">
+    BrainFlow · Dados atualizados a partir do extrato.
+   </footer>
+  </main>
+  <script src="js/core.js">
+  </script>
+  <script src="js/graficos.js">
+  </script>
+ </body>
+</html>

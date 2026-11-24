@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   BrainFlow | Painel do objetivo
+  </title>
+  <link href="css/app.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <main class="shell">
+   <header class="topbar">
+    <a class="brand" href="index.html">
+     <img alt="" class="brand-mark" src="assets/logo/brainflow-mark.svg"/>
+     <span>
+      Brain
+      <span>
+       Flow
+      </span>
+     </span>
+    </a>
+    <div class="top-actions">
+     <button aria-label="Voltar" class="icon-button back-button" data-back="index.html" data-tooltip="Voltar para a tela anterior">
+      ←
+     </button>
+     <button class="icon-button" data-theme-toggle="">
+     </button>
+    </div>
+   </header>
+   <div class="eyebrow">
+    Painel do objetivo
+   </div>
+   <h1 class="panel-title" id="objective-name">
+    Objetivo
+   </h1>
+   <p class="muted" id="objective-subtitle">
+    Escolha uma área para continuar.
+   </p>
+   <div class="tile-grid">
+    <a class="tile" id="go-track">
+     <span class="tile-icon">
+      ◎
+     </span>
+     <strong>
+      Acompanhamento
+     </strong>
+     <small>
+      Meta prevista, saldo restante, desempenho e dias disponíveis.
+     </small>
+    </a>
+    <a class="tile" id="go-movements">
+     <span class="tile-icon">
+      ▤
+     </span>
+     <strong>
+      Movimentações
+     </strong>
+     <small>
+      Consulte o extrato e todos os valores registrados.
+     </small>
+    </a>
+    <a class="tile" id="go-register">
+     <span class="tile-icon">
+      ＋
+     </span>
+     <strong>
+      Registrar valores
+     </strong>
+     <small>
+      Informe quanto conseguiu fazer e a origem do valor.
+     </small>
+    </a>
+    <a class="tile" id="go-charts">
+     <span class="tile-icon">
+      ▥
+     </span>
+     <strong>
+      Gráficos
+     </strong>
+     <small>
+      Visualize sua evolução semanal e mensal.
+     </small>
+    </a>
+   </div>
+   <div class="form-actions">
+    <a class="button button-secondary" id="edit-objective">
+     ✎ Editar objetivo
+    </a>
+    <button class="button button-danger" id="delete-objective">
+     Excluir objetivo
+    </button>
+   </div>
+   <footer class="footer">
+    Cada objetivo mantém seus próprios registros e resultados.
+   </footer>
+  </main>
+  <div aria-labelledby="delete-title" aria-modal="true" class="modal-backdrop hidden" id="delete-modal" role="dialog">
+   <section class="modal modal-centered">
+    <div class="eyebrow">
+     Excluir objetivo
+    </div>
+    <h2 id="delete-title">
+     Deseja excluir este objetivo?
+    </h2>
+    <p id="delete-message">
+     Todos os registros vinculados também serão excluídos. Essa ação não poderá ser desfeita.
+    </p>
+    <div class="modal-actions">
+     <button class="button button-danger" id="confirm-delete">
+      Excluir objetivo
+     </button>
+     <button class="button button-secondary" id="cancel-delete">
+      Cancelar
+     </button>
+    </div>
+   </section>
+  </div>
+  <script src="js/core.js">
+  </script>
+  <script src="js/panel.js">
+  </script>
+ </body>
+</html>

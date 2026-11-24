@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   BrainFlow | Acompanhamento
+  </title>
+  <link href="css/app.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <main class="shell">
+   <header class="topbar">
+    <a class="brand" href="index.html">
+     <img alt="" class="brand-mark" src="assets/logo/brainflow-mark.svg"/>
+     <span>
+      Brain
+      <span>
+       Flow
+      </span>
+     </span>
+    </a>
+    <div class="top-actions">
+     <button aria-label="Voltar" class="icon-button back-button" data-back="objetivo.html" data-tooltip="Voltar para o painel do objetivo">
+      ←
+     </button>
+     <button class="icon-button" data-theme-toggle="">
+     </button>
+    </div>
+   </header>
+   <div class="eyebrow">
+    Acompanhamento
+   </div>
+   <h1 class="panel-title" id="track-name">
+    Seu desempenho
+   </h1>
+   <p class="muted">
+    Acompanhe seu ritmo e mantenha seu objetivo em dia.
+   </p>
+   <div class="date-strip">
+    <div class="date-box">
+     <small>
+      Início
+     </small>
+     <strong id="track-start">
+      —
+     </strong>
+    </div>
+    <div class="date-box date-today">
+     <small>
+      Hoje
+     </small>
+     <strong id="track-today">
+      —
+     </strong>
+     <small id="track-month">
+      —
+     </small>
+    </div>
+    <div class="date-box">
+     <small>
+      Término
+     </small>
+     <strong id="track-end">
+      —
+     </strong>
+    </div>
+   </div>
+   <div class="notice hidden" id="period-notice">
+   </div>
+   <div class="performance neutral" id="performance">
+    <h3 id="performance-title">
+     Seu ritmo
+    </h3>
+    <div class="percent" id="performance-percent">
+     100%
+    </div>
+    <p class="muted" id="performance-text">
+     Comparação com o planejado até hoje.
+    </p>
+   </div>
+   <div class="stats-grid">
+    <div class="stat">
+     <small>
+      Meta prevista para hoje
+     </small>
+     <strong id="today-target">
+      R$ 0,00
+     </strong>
+    </div>
+    <div class="stat">
+     <small>
+      Realizado hoje
+     </small>
+     <strong id="today-total">
+      R$ 0,00
+     </strong>
+    </div>
+    <div class="stat">
+     <small>
+      Saldo restante
+     </small>
+     <strong id="remaining">
+      R$ 0,00
+     </strong>
+    </div>
+    <div class="stat">
+     <small>
+      Dias ativos restantes
+     </small>
+     <strong id="days-left">
+      0
+     </strong>
+    </div>
+   </div>
+   <div class="card">
+    <div class="progress-line">
+     <span>
+      Progresso do objetivo
+     </span>
+     <strong id="progress-label">
+      0%
+     </strong>
+    </div>
+    <div class="progress-track" style="margin:12px 0">
+     <span id="progress-fill" style="width:0%">
+     </span>
+    </div>
+    <p class="muted" id="progress-detail">
+    </p>
+   </div>
+   <div class="form-actions">
+    <a class="button button-primary" id="register-link">
+     Registrar valores
+    </a>
+    <a class="button button-secondary" id="charts-link">
+     Ver gráficos
+    </a>
+    <a class="button button-secondary" id="edit-link">
+     Editar objetivo
+    </a>
+   </div>
+   <footer class="footer">
+    Seu desempenho é recalculado a cada registro.
+   </footer>
+  </main>
+  <script src="js/core.js">
+  </script>
+  <script src="js/acompanhamento.js">
+  </script>
+ </body>
+</html>

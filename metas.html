@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   BrainFlow | Planejar objetivo
+  </title>
+  <link href="css/app.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <main class="shell form-layout">
+   <header class="topbar">
+    <a class="brand" href="index.html">
+     <img alt="" class="brand-mark" src="assets/logo/brainflow-mark.svg"/>
+     <span>
+      Brain
+      <span>
+       Flow
+      </span>
+     </span>
+    </a>
+    <div class="top-actions">
+     <button aria-label="Voltar" class="icon-button back-button" data-back="index.html" data-tooltip="Voltar para a tela anterior">
+      ←
+     </button>
+     <button class="icon-button" data-theme-toggle="">
+     </button>
+    </div>
+   </header>
+   <div class="hero">
+    <div class="eyebrow">
+     Planejamento inteligente
+    </div>
+    <h1 id="form-title">
+     Crie seu objetivo
+    </h1>
+    <p>
+     Defina o que deseja alcançar. O BrainFlow calcula o ritmo necessário e acompanha sua evolução.
+    </p>
+   </div>
+   <section class="card">
+    <form id="objective-form" novalidate="">
+     <div class="form-card">
+      <div class="field">
+       <label for="category">
+        Categoria do objetivo
+       </label>
+       <select id="category" required="">
+        <option value="">
+         Selecione uma categoria
+        </option>
+        <option>
+         Veículo
+        </option>
+        <option>
+         Casa
+        </option>
+        <option>
+         Viagem
+        </option>
+        <option>
+         Educação
+        </option>
+        <option>
+         Reserva financeira
+        </option>
+        <option>
+         Outros
+        </option>
+       </select>
+      </div>
+      <div class="field hidden" id="custom-category-wrap">
+       <label for="custom-category">
+        Qual é a sua categoria?
+       </label>
+       <input id="custom-category" maxlength="60" placeholder="Ex.: Casamento, negócio..."/>
+      </div>
+      <div class="field full">
+       <label for="name">
+        Dê um nome ao seu objetivo
+       </label>
+       <input id="name" maxlength="70" placeholder="Ex.: Minha viagem para a praia" required=""/>
+      </div>
+      <div class="field">
+       <label for="goal">
+        Valor que deseja alcançar (R$)
+       </label>
+       <input id="goal" inputmode="decimal" placeholder="R$ 0,00" required=""/>
+      </div>
+      <div class="field">
+       <label for="available">
+        Quanto você já possui? (R$)
+       </label>
+       <input id="available" inputmode="decimal" placeholder="R$ 0,00" value="0,00"/>
+       <small>
+        Valor que já está disponível para esse objetivo.
+       </small>
+      </div>
+      <div class="field">
+       <label for="start">
+        Data de início
+       </label>
+       <input id="start" required="" type="date"/>
+      </div>
+      <div class="field">
+       <label for="end">
+        Data de término
+       </label>
+       <input id="end" required="" type="date"/>
+      </div>
+      <div class="field full">
+       <label>
+        Organize seus dias de trabalho
+       </label>
+       <div class="mode-options">
+        <label class="mode-option">
+         <input checked="" name="mode" type="radio" value="all"/>
+         <svg aria-hidden="true" class="mode-brain" fill="none" viewbox="0 0 64 64">
+          <path d="M30 10c-7-7-17-2-16 7-7 4-6 14 0 18-2 9 7 15 16 10V10Zm4 0c7-7 17-2 16 7 7 4 6 14 0 18 2 9-7 15-16 10V10Z" stroke="currentColor" stroke-linejoin="round" stroke-width="2.8">
+          </path>
+          <path d="M32 10v37M19 23h8m-8 10h8m18-10h-8m8 10h-8" stroke="currentColor" stroke-linecap="round" stroke-width="2.4">
+          </path>
+          <path class="bulb" d="M32 18c-5 0-8 4-8 8 0 3 2 5 4 7v5h8v-5c2-2 4-4 4-7 0-4-3-8-8-8Z" stroke-width="2">
+          </path>
+          <path d="M29 42h6m-5 4h4" stroke="currentColor" stroke-linecap="round" stroke-width="2">
+          </path>
+         </svg>
+         <span>
+          <strong>
+           Todos os dias
+          </strong>
+          <small>
+           Inclui sábados e domingos.
+          </small>
+         </span>
+        </label>
+        <label class="mode-option">
+         <input name="mode" type="radio" value="weekdays"/>
+         <svg aria-hidden="true" class="mode-brain" fill="none" viewbox="0 0 64 64">
+          <path d="M30 10c-7-7-17-2-16 7-7 4-6 14 0 18-2 9 7 15 16 10V10Zm4 0c7-7 17-2 16 7 7 4 6 14 0 18 2 9-7 15-16 10V10Z" stroke="currentColor" stroke-linejoin="round" stroke-width="2.8">
+          </path>
+          <path d="M32 10v37M19 23h8m-8 10h8m18-10h-8m8 10h-8" stroke="currentColor" stroke-linecap="round" stroke-width="2.4">
+          </path>
+          <path class="bulb" d="M32 18c-5 0-8 4-8 8 0 3 2 5 4 7v5h8v-5c2-2 4-4 4-7 0-4-3-8-8-8Z" stroke-width="2">
+          </path>
+          <path d="M29 42h6m-5 4h4" stroke="currentColor" stroke-linecap="round" stroke-width="2">
+          </path>
+         </svg>
+         <span>
+          <strong>
+           Segunda a sexta
+          </strong>
+          <small>
+           Exclui finais de semana.
+          </small>
+         </span>
+        </label>
+        <label class="mode-option">
+         <input name="mode" type="radio" value="custom"/>
+         <svg aria-hidden="true" class="mode-brain" fill="none" viewbox="0 0 64 64">
+          <path d="M30 10c-7-7-17-2-16 7-7 4-6 14 0 18-2 9 7 15 16 10V10Zm4 0c7-7 17-2 16 7 7 4 6 14 0 18 2 9-7 15-16 10V10Z" stroke="currentColor" stroke-linejoin="round" stroke-width="2.8">
+          </path>
+          <path d="M32 10v37M19 23h8m-8 10h8m18-10h-8m8 10h-8" stroke="currentColor" stroke-linecap="round" stroke-width="2.4">
+          </path>
+          <path class="bulb" d="M32 18c-5 0-8 4-8 8 0 3 2 5 4 7v5h8v-5c2-2 4-4 4-7 0-4-3-8-8-8Z" stroke-width="2">
+          </path>
+          <path d="M29 42h6m-5 4h4" stroke="currentColor" stroke-linecap="round" stroke-width="2">
+          </path>
+         </svg>
+         <span>
+          <strong>
+           Personalizado
+          </strong>
+          <small>
+           Escolha os dias sem depósito.
+          </small>
+         </span>
+        </label>
+       </div>
+      </div>
+      <div class="field full hidden" id="custom-days-wrap">
+       <label>
+        Selecione os dias sem depósito
+       </label>
+       <small>
+        Toque nos dias dentro do período para marcar ou desmarcar folgas.
+       </small>
+       <div class="calendar-card">
+        <div class="calendar-head">
+         <button aria-label="Mês anterior" class="icon-button" id="calendar-prev" type="button">
+          ‹
+         </button>
+         <strong id="calendar-month">
+          Calendário
+         </strong>
+         <button aria-label="Próximo mês" class="icon-button" id="calendar-next" type="button">
+          ›
+         </button>
+        </div>
+        <div class="calendar-week">
+         <span>
+          Dom
+         </span>
+         <span>
+          Seg
+         </span>
+         <span>
+          Ter
+         </span>
+         <span>
+          Qua
+         </span>
+         <span>
+          Qui
+         </span>
+         <span>
+          Sex
+         </span>
+         <span>
+          Sáb
+         </span>
+        </div>
+        <div class="calendar-grid" id="calendar-grid">
+        </div>
+        <small class="muted" id="off-day-count">
+         Nenhum dia de folga selecionado.
+        </small>
+       </div>
+      </div>
+      <div class="field full">
+       <div class="summary-box">
+        <div>
+         <span class="muted">
+          Sua meta diária estimada
+         </span>
+         <small class="muted" id="daily-detail" style="display:block;margin-top:5px">
+          Preencha o valor e o período para calcular.
+         </small>
+        </div>
+        <strong id="daily-preview">
+         R$ 0,00
+        </strong>
+       </div>
+      </div>
+      <div aria-live="polite" class="field full" id="start-notice">
+      </div>
+     </div>
+     <p class="error" id="form-error" role="alert">
+     </p>
+     <div class="form-actions">
+      <button class="button button-primary" id="save-objective" type="submit">
+       Salvar objetivo
+      </button>
+      <button class="button button-secondary" id="clear-form" type="button">
+       Limpar informações do objetivo
+      </button>
+     </div>
+    </form>
+   </section>
+   <footer class="footer">
+    BrainFlow · Seu segundo cérebro.
+   </footer>
+  </main>
+  <script src="js/core.js">
+  </script>
+  <script src="js/form.js">
+  </script>
+ </body>
+</html>
