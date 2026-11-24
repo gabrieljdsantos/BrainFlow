@@ -1,0 +1,157 @@
+/* ==========================================
+   DRIVECONTROL - TELA INICIAL
+========================================== */
+/* ESTRUTURA PRINCIPAL */ .home-page {
+  min-height: 100vh;
+}
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 55px 24px 25px;
+  text-align: center;
+  box-sizing: border-box;
+}
+/* ==========================================
+   LOGOTIPO
+========================================== */ .home-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.home-header .brand-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+/* ==========================================
+   CONTEÚDO CENTRAL
+========================================== */ .home-content {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  padding: 40px 0;
+  box-sizing: border-box;
+}
+/* ==========================================
+   VOLANTE DRIVECONTROL
+========================================== */ .steering-wheel {
+  width: 145px;
+  height: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  background: rgba(196, 154, 90, 0.10);
+  border: 1px solid rgba(196, 154, 90, 0.18);
+  border-radius: 50%;
+  animation: steeringFloat 3s ease-in-out infinite;
+}
+.steering-wheel svg {
+  width: 105px;
+  height: 105px;
+  transition: transform 0.4s ease;
+}
+.steering-wheel:hover svg {
+  transform: rotate(25deg);
+}
+/* ==========================================
+   APRESENTAÇÃO
+========================================== */ .home-content h1 {
+  font-size: clamp(1.7rem, 5vw, 2.4rem);
+  margin-bottom: 15px;
+}
+.home-content p {
+  max-width: 370px;
+  line-height: 1.7;
+  margin-bottom: 35px;
+}
+/* ==========================================
+   BOTÃO INICIAR PROJETO
+========================================== */ .home-page .home-content .start-button {
+  width: 100%;
+  max-width: 310px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 16px 24px;
+  box-sizing: border-box;
+  background-color: #C49A5A;
+  color: #172235;
+  border: none;
+  border-radius: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-decoration: none;
+  box-shadow: 0 5px 15px rgba(196, 154, 90, 0.15);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+.home-page .home-content .start-button:hover {
+  background-color: #D5AC70;
+  color: #172235;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(196, 154, 90, 0.22);
+}
+.home-page .home-content .start-button .button-arrow {
+  color: #172235;
+  font-size: 22px;
+  transition: transform 0.25s ease;
+}
+.home-page .home-content .start-button:hover .button-arrow {
+  transform: translateX(5px);
+}
+/* ==========================================
+   RODAPÉ
+========================================== */ .home-footer {
+  font-size: 12px;
+  opacity: 0.65;
+  padding-top: 20px;
+}
+/* ==========================================
+   ANIMAÇÃO DO VOLANTE
+========================================== */ @keyframes steeringFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+/* ==========================================
+   RESPONSIVIDADE
+========================================== */ @media (max-width: 600px) {
+  .home-container {
+    padding: 35px 20px 20px;
+  }
+  .steering-wheel {
+    width: 125px;
+    height: 125px;
+  }
+  .steering-wheel svg {
+    width: 90px;
+    height: 90px;
+  }
+  .home-content {
+    padding: 30px 0;
+  }
+}
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */ @media (prefers-reduced-motion: reduce) {
+  .steering-wheel {
+    animation: none;
+  }
+  .steering-wheel svg, .start-button, .button-arrow {
+    transition: none;
+  }
+}
